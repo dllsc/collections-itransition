@@ -10,12 +10,17 @@ export enum EItemFieldType {
 }
 
 export interface IItemField {
+  readonly id: string;
   readonly name: string;
   readonly type: EItemFieldType;
   readonly values: any[];
 }
 
-export interface CollectionForm {
+// 1, 2, 3,1, 1
+// asdqwe, 1qdasdaf, fwwegwe
+// 01/01/2020 , 01/01/2020, 01/01/2020
+
+export interface ICollectionForm {
   name: string,
   description: string,
   theme: string,

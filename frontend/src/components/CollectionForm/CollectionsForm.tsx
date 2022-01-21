@@ -5,7 +5,7 @@ import { axiosInstance, post, tokenKey } from '../../axios-instance';
 import { ErrorMessage } from '@hookform/error-message';
 import { TextareaAutosize } from '@mui/material';
 import { REQUIRE_MESSAGE } from '../../constants/constants';
-import { CollectionForm, CollectionFormProps } from './CollectionsForm.props';
+import { ICollectionForm, CollectionFormProps } from './CollectionsForm.props';
 import { CollectionItemForm } from '../CollectionItemForm/CollectionItemForm';
 
 type responseDataPost = {
@@ -35,10 +35,10 @@ export function CollectionsForm({mode}:CollectionFormProps) {
       console.log('Invalid');
     }
   }
-  const { register, handleSubmit, formState: { errors }, setError } = useForm<CollectionForm>();
+  const { register, handleSubmit, formState: { errors }, setError } = useForm<ICollectionForm>();
 
-  const onSubmit: SubmitHandler<CollectionForm> = data => {
-    post<CollectionForm, responseDataPost>(path1,data).then(r => localStorage.setItem('collectionID', r.id.toString())).catch((error => {
+  const onSubmit: SubmitHandler<ICollectionForm> = data => {
+    post<ICollectionForm, responseDataPost>(path1,data).then(r => localStorage.setItem('collectionID', r.id.toString())).catch((error => {
       if (error.response) {
         setError('name', { type: error, message: error.response.data.message });
       }

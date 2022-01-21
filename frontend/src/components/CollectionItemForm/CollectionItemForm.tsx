@@ -1,9 +1,10 @@
 import { ErrorMessage } from '@hookform/error-message';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { axiosInstance, post } from '../../axios-instance';
+import { post } from '../../axios-instance';
 import { MatButton, MatInput } from '../../pages/imports-material';
 import React from 'react';
 import { REQUIRE_MESSAGE } from '../../constants/constants';
+import {randomString} from "./RandomString";
 
 
 interface ItemForm {
@@ -16,12 +17,9 @@ interface IAddItemProps {
 }
 
 
-
-
 const newItemFormData = (data:ItemForm, props:IAddItemProps)=>{
   const newItemFormData = new FormData();
   const imageFile = data.image[0];
-  const randomString = () => Math.random().toString(16).substring(3, 9);
 
   newItemFormData.append('name', data.name);
   newItemFormData.append('image', imageFile, `${randomString()}.${imageFile.name}`);
