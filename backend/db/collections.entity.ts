@@ -8,10 +8,12 @@ import {
 } from 'typeorm';
 import UserEntity from './user.entity';
 import ItemsEntity from './items.entity';
+import { ICollectionDto } from '../src/dto/create-collection.dto';
+import FieldsEntity from './fields.entity';
+import { createIdModel } from '../src/utils/database.utils';
 
 @Entity()
-export default class CollectionsEntity extends BaseEntity
-{
+export default class CollectionsEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -24,11 +26,25 @@ export default class CollectionsEntity extends BaseEntity
   @Column({ length: 500 })
   theme: string;
 
-  // n:1 relation with collection
-  @ManyToOne(type => UserEntity, user => user.collections)
+  @ManyToOne(() => UserEntity, user => user.collections)
   user: UserEntity;
 
-  @OneToMany( type => ItemsEntity, items => items.collection)
+  @OneToMany(() => ItemsEntity, item => item.collection)
   items: ItemsEntity[];
 
+  @OneToMany(() => FieldsEntity, field => field.collection)
+  fields: FieldsEntity[];
+
+  userId: number;
+
+  static fromDto(dto: ICollectionDto): CollectionsEntity {
+    const collection = new CollectionsEntity();
+
+    collection.name = dto.name;
+    collection.theme = dto.theme;
+    collection.user = createIdModel<UserEntity>({ id: dto.userId });
+    collection.description = dto.description;
+
+    return collection;
+  }
 }

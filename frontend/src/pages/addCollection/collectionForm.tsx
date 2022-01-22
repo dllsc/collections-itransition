@@ -7,11 +7,12 @@ import { REQUIRE_MESSAGE } from '../../constants/constants';
 import {
   EItemFieldType,
   IAddItemFormModel,
-  ICollectionForm,
+  ICollectionForm, ICollectionFormDto,
   IItemField,
 } from '../../components/CollectionForm/CollectionsForm.props';
 import { Delete } from '@mui/icons-material';
 import { randomString } from '../../components/CollectionItemForm/RandomString';
+import { post } from '../../axios-instance';
 
 type WithId<TInitial> = TInitial & { id: string };
 
@@ -28,6 +29,10 @@ interface IItemFieldProps {
 }
 
 const required = { required: REQUIRE_MESSAGE };
+
+function keyOf<T>(key: keyof T): string {
+  return key as any as string;
+}
 
 function createDefaultItemForm(): IAddItemFormModel {
   return {
@@ -220,10 +225,22 @@ export function CollectionForm() {
   });
   const { register, handleSubmit, formState: { errors, isValid }, getValues } = formControl;
 
-  const onSubmit: SubmitHandler<ICollectionForm> = data => {
+  const onSubmit: SubmitHandler<ICollectionForm> = (collectionForm: ICollectionForm) => {
     console.log('submit');
 
-    // const images = getValues().items.map(item => item.image[0]);
+    console.log(collectionForm);
+
+    const images = getValues().items.map(item => item.image[0]);
+    const jsonPartOfCollectionForm: ICollectionFormDto = {
+      ...collectionForm,
+      items: collectionForm.items.map(({ name }) => ({ name })),
+    };
+    const collectionFormData = new FormData();
+
+    collectionFormData.append('collection', JSON.stringify(jsonPartOfCollectionForm));
+    images.forEach((imageFile, index) => collectionFormData.append(`images`, imageFile));
+
+    post<FormData, any>('collection', collectionFormData).then(console.log);
   };
 
   return <FormProvider {...formControl}>

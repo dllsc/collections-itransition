@@ -1,6 +1,7 @@
 import { Button, Card, CardActions, CardContent, CardMedia, Grid, Typography } from '@mui/material';
 import Carousel from 'react-material-ui-carousel';
 import { makeStyles } from '@mui/styles';
+import { useParams } from 'react-router-dom';
 
 export const useStyles = makeStyles((theme) => ({
   root: {
@@ -124,6 +125,10 @@ function CardItem() {
 
 
 export function Read() {
+  const params = useParams<{ id: string }>();
+
+  params.id;
+
   return <>
     <Grid container>
       <Grid item

@@ -16,15 +16,23 @@ export interface IItemField {
   readonly values: any[];
 }
 
-// 1, 2, 3,1, 1
-// asdqwe, 1qdasdaf, fwwegwe
-// 01/01/2020 , 01/01/2020, 01/01/2020
-
 export interface ICollectionForm {
   name: string,
   description: string,
   theme: string,
   items: IAddItemFormModel[];
+  itemsFields: IItemField[];
+}
+
+export interface IItemFormDto {
+  readonly name: string;
+}
+
+export interface ICollectionFormDto {
+  name: string;
+  description: string;
+  theme: string;
+  items: IItemFormDto[];
   itemsFields: IItemField[];
 }
 

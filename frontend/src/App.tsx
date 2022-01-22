@@ -8,12 +8,13 @@ import { CollectionsPage } from './pages/Collections/CollectionsPage';
 import { Read } from './pages/ReadCollection/Read';
 import { CollectionForm } from './pages/addCollection/collectionForm';
 
+// localhost:4200/collection/read/1
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/collection/read" element={<Read/>}/>
+        <Route path="/collection/read/:id" element={<Read/>}/>
         <Route path="/collection/add" element={<CollectionForm/>}/>
         <Route path="/collection" element={<CollectionsPage/>}/>
         <Route path="/collection/items" element={<ReadCollection/>}/>

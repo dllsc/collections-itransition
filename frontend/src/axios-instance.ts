@@ -36,8 +36,8 @@ axiosInstance.interceptors.response.use(r => r, (response) => {
   const responseJSON = JSON.parse(JSON.stringify(response));
   console.log(responseJSON.status);
   if (responseJSON.status >= 400 && responseJSON.status < 404) {
-    localStorage.removeItem(tokenKey);
-    window.location.href = '/login';
+    // localStorage.removeItem(tokenKey);
+    // window.location.href = '/login';
     // TODO: go to login page
   }
 

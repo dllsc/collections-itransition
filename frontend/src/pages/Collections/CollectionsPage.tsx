@@ -1,6 +1,4 @@
 import { Collections } from './Collections';
-import { MatButton } from '../imports-material';
-import { Link } from 'react-router-dom';
 import React from 'react';
 
 

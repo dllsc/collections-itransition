@@ -1,7 +1,5 @@
-import { BaseEntity, Column, Entity, JoinTable, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import BookEntity from './book.entity';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import CollectionsEntity from './collections.entity';
-import GenreEntity from './genre.entity';
 
 @Entity()
 export default class UserEntity extends BaseEntity {
@@ -17,11 +15,6 @@ export default class UserEntity extends BaseEntity {
   @Column({ length: 500 })
   passwordHash: string;
 
-  @OneToMany( type => CollectionsEntity , collection => collection.user)
+  @OneToMany(() => CollectionsEntity, collection => collection.user)
   collections: CollectionsEntity[];
-
-  // 1:n relation with bookEntity
-  @OneToMany( type => BookEntity , book => book.user)
-  books: BookEntity[];
-
 }

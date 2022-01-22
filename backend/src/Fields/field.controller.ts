@@ -1,9 +1,6 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { FieldService } from './field.service';
-import CreateBookDto from '../dto/create-book.dto';
-import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { LoggedUserService } from '../logged-user.service';
-import CreateCollectionDto from '../dto/create-collection.dto';
 
 @Controller('collections')
 export default class FieldController {

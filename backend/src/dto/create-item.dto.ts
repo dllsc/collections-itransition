@@ -1,8 +1,11 @@
-export interface CreateItemDto {
+export interface ICreateItemDto {
   readonly name: string;
-  readonly collectionID: string;
 }
 
-export interface ItemDto extends CreateItemDto {
+export interface IItemDto extends ICreateItemDto {
   readonly image: string;
+  readonly collectionID: number;
+}
+
+export interface IItemJsonDto extends IItemDto {
 }

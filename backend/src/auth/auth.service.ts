@@ -11,6 +11,7 @@ import { UserModel } from './user.model';
 
 export interface IToken {
   accessToken: string;
+  userId: number;
 }
 
 @Injectable()
@@ -54,6 +55,7 @@ export class AuthService {
 
     return {
       accessToken: result,
+      userId: id,
     };
   }
 }

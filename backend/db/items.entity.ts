@@ -8,6 +8,8 @@ import {
 } from 'typeorm';
 import CollectionsEntity from './collections.entity';
 import FieldsEntity from './fields.entity';
+import { IItemDto } from '../src/dto/create-item.dto';
+import { createIdModel } from '../src/utils/database.utils';
 
 @Entity()
 export default class ItemsEntity extends BaseEntity
@@ -21,11 +23,23 @@ export default class ItemsEntity extends BaseEntity
   @Column({ length: 500 })
   image: string;
 
-  // n:1 relation with collection
-  @ManyToOne(type => CollectionsEntity, collection => collection.items)
+  collectionId: number;
+
+  @ManyToOne(() => CollectionsEntity, collection => collection.items, {
+    nullable: false,
+    createForeignKeyConstraints: true,
+  })
   collection: CollectionsEntity;
 
-  @OneToMany( type => FieldsEntity, field => field.item)
-  field: FieldsEntity[];
+  static fromDto(dto: IItemDto): ItemsEntity {
+    const item = new ItemsEntity();
+
+    item.name = dto.name;
+    item.image = dto.image;
+
+    item.collection = createIdModel<CollectionsEntity>({ id: dto.collectionID });
+
+    return item;
+  }
 
 }

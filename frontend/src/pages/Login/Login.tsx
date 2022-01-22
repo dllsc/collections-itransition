@@ -14,7 +14,8 @@ type RegistrationForm = {
 };
 
 interface IToken {
-  accessToken: string
+  accessToken: string;
+  userId: number;
 }
 
 
@@ -24,15 +25,16 @@ export default function Login() {
   const onSubmit: SubmitHandler<RegistrationForm> = data => {
     axiosInstance
       .post<IToken>('auth/login', data)
-      .then(result => saveTokenAndGoToCollections(result.data.accessToken)).catch(error => {
+      .then(result => saveLoginDataAndGoToCollections(result.data.accessToken, result.data.userId)).catch(error => {
       if (error.response) {
         setError('email', { type: error, message: error.response.data.message })
       }
     });
   };
 
-  function saveTokenAndGoToCollections(token: string) {
+  function saveLoginDataAndGoToCollections(token: string, userId: number) {
     localStorage.setItem('access_token', token);
+    localStorage.setItem('userId', userId.toString());
     navigate('/collections');
   }
   const [pressed, setPressed] = useState(false);

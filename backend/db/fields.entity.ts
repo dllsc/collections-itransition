@@ -6,26 +6,38 @@ import {
   ManyToOne,
 } from 'typeorm';
 import ItemsEntity from './items.entity';
+import { IFieldDto } from '../src/dto/field.dto';
+import CollectionsEntity from './collections.entity';
+import { createIdModel } from '../src/utils/database.utils';
+
 
 @Entity()
-export default class FieldsEntity extends BaseEntity
-{
+export default class FieldsEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ length: 500 })
   name: string;
 
-  @Column({ length: 500 })
-  stringValue: string;
+  @Column()
+  values: string;
 
   @Column()
-  numberValue: number;
+  type: string;
 
-  @Column()
-  dateValue: Date;
+  collectionId: number;
 
-  @ManyToOne(type => ItemsEntity, item => item.field)
-  item: ItemsEntity;
+  @ManyToOne(() => CollectionsEntity, item => item.fields)
+  collection: CollectionsEntity;
 
+  static fromDto(dto: IFieldDto): FieldsEntity {
+    const field = new FieldsEntity();
+
+    field.name = dto.name;
+    field.values = dto.values.join(',');
+    field.type = dto.type;
+    field.collection = createIdModel<CollectionsEntity>({ id: dto.collectionId });
+
+    return field;
+  }
 }

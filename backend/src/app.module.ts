@@ -5,10 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 //
 import UserEntity from '../db/user.entity';
-import BooksModule from 'src/Book/books.module';
-import GenreModule from 'src/Genre/genre.module';
-import BookEntity from '../db/book.entity';
-import GenreEntity from '../db/genre.entity';
 import { LoggedUserService } from './logged-user.service';
 import CollectionsModule from './Collections/collections.module';
 import CollectionsEntity from '../db/collections.entity';
@@ -42,13 +38,11 @@ export class GlobalModule {
       synchronize: true,
     }),
     TypeOrmModule.forFeature(
-      [UserEntity, BookEntity, GenreEntity, CollectionsEntity, ItemsEntity],
+      [UserEntity, CollectionsEntity, ItemsEntity],
     ),
     ServeStaticModule.forRoot({
       rootPath: `${__dirname}/../images`,
     }),
-    BooksModule,
-    GenreModule,
     GlobalModule,
     CollectionsModule,
     ItemModule,
@@ -56,3 +50,4 @@ export class GlobalModule {
 })
 export class AppModule {
 }
+

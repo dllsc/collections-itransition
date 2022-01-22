@@ -1,11 +1,10 @@
 import UserEntity from '../../db/user.entity';
-import CreateCollectionDto from '../dto/create-collection.dto';
 import CollectionsEntity from '../../db/collections.entity';
 
 
 export class CollectionsService {
 
-  async insert(collectionDetails: CreateCollectionDto): Promise<CollectionsEntity> {
+  async insert(collectionDetails: any): Promise<CollectionsEntity> {
     const { name, description, theme, userID } = collectionDetails;
     const collection = new CollectionsEntity();
     collection.name = name;

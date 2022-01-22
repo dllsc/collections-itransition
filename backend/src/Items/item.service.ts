@@ -1,10 +1,10 @@
 import CollectionsEntity from '../../db/collections.entity';
-import { ItemDto } from '../dto/create-item.dto';
+import { IItemDto } from '../dto/create-item.dto';
 import ItemsEntity from '../../db/items.entity';
 
 export class ItemService {
 
-  async insert(itemDetails: ItemDto): Promise<ItemsEntity> {
+  async insert(itemDetails: IItemDto): Promise<ItemsEntity> {
     const { name, image, collectionID } = itemDetails;
     const item = new ItemsEntity();
     item.name = name;

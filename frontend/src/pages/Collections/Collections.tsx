@@ -11,7 +11,7 @@ export function Collections() {
 
 
   const fetchData = async () => {
-    const response = await axiosInstance.get('collections');
+    const response = await axiosInstance.get('collection');
     setCollections(response.data);
   };
 

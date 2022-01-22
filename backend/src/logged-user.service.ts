@@ -9,7 +9,7 @@ export class LoggedUserService {
   ) {
   }
 
-  get userId(): string {
+  get userId(): number {
     if (!this.request.user) {
       throw new Error('user not logged in');
     }

@@ -1,11 +1,4 @@
-import BookEntity from '../../db/book.entity';
-import UserEntity from '../../db/user.entity';
-import CreateCollectionDto from '../dto/create-collection.dto';
 import CollectionsEntity from '../../db/collections.entity';
-import { ItemService } from '../Items/item.service';
-import ItemsEntity from '../../db/items.entity';
-import FieldsEntity from '../../db/fields.entity';
-import CreateFieldsDto from '../dto/create-field.dto';
 
 export class FieldService {
 
