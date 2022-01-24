@@ -6,7 +6,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 import ItemsEntity from './items.entity';
-import { IFieldDto } from '../src/dto/field.dto';
+import { IFieldEntityDto } from '../src/dto/field.dto';
 import CollectionsEntity from './collections.entity';
 import { createIdModel } from '../src/utils/database.utils';
 
@@ -30,7 +30,7 @@ export default class FieldsEntity extends BaseEntity {
   @ManyToOne(() => CollectionsEntity, item => item.fields)
   collection: CollectionsEntity;
 
-  static fromDto(dto: IFieldDto): FieldsEntity {
+  static fromDto(dto: IFieldEntityDto): FieldsEntity {
     const field = new FieldsEntity();
 
     field.name = dto.name;

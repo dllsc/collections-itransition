@@ -1,25 +1,30 @@
-import { Body, Controller, Get, Param, Post, Req, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Req,
+  UploadedFiles,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { CollectionsService } from './collections.service';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { LoggedUserService } from '../logged-user.service';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { ICollectionDto, ICollectionFormDataJsonDto, ICollectionFormDto } from '../dto/create-collection.dto';
+import { ICollectionEntityDto, ICollectionFormDataJsonDto, ICollectionFormDto } from '../dto/collection.dto';
 import ItemsEntity from '../../db/items.entity';
 import CollectionsEntity from '../../db/collections.entity';
 import * as fs from 'fs';
 import { createImageFilename } from '../utils/file.utils';
-import { IItemDto } from '../dto/create-item.dto';
-import { IFieldDto } from '../dto/field.dto';
+import { IItemEntityDto } from '../dto/item.dto';
+import { IFieldEntityDto } from '../dto/field.dto';
 import FieldsEntity from '../../db/fields.entity';
+import { createQueryBuilder } from 'typeorm';
 
 const IMG_DIR = './dist/images';
-
-
-// localhost:3000/collection/one/1
-// localhost:3000/collection/page/0/10
-
-
-// collection/view/1 -> page of collection(collection/item)
 
 @Controller('collection')
 export default class CollectionsController {
@@ -38,7 +43,7 @@ export default class CollectionsController {
   }
 
   private ensureDirectoryExists(): void {
-    if (!fs.existsSync(IMG_DIR)){
+    if (!fs.existsSync(IMG_DIR)) {
       fs.mkdirSync(IMG_DIR, { recursive: true });
     }
   }
@@ -55,7 +60,7 @@ export default class CollectionsController {
     const { userId } = this.loggedUserService;
     const collectionForm: ICollectionFormDto = JSON.parse(collectionFormDataJsonDto.collection);
     const filenames = files.map(file => this.uploadFile(userId, file));
-    const collectionDto: ICollectionDto = {
+    const collectionDto: ICollectionEntityDto = {
       userId,
       name: collectionForm.name,
       theme: collectionForm.theme,
@@ -63,29 +68,50 @@ export default class CollectionsController {
     };
     const collectionsEntity = CollectionsEntity.fromDto(collectionDto);
     const savedCollectionEntity = await collectionsEntity.save();
-    const itemsDto: IItemDto[] = collectionForm.items.map(({ name }, index) => ({
+    const itemsDto: IItemEntityDto[] = collectionForm.items.map(({ name }, index) => ({
       name,
       image: filenames[index],
       collectionID: savedCollectionEntity.id,
     }));
     const itemEntities = itemsDto.map(ItemsEntity.fromDto);
-    const savedItemEntities = await ItemsEntity.save(itemEntities);
-    const fieldsDto: IFieldDto[] = collectionForm.itemsFields.map(({ name, type, values }) => ({
+    const fieldsDto: IFieldEntityDto[] = collectionForm.itemsFields.map(({ name, type, values }) => ({
       name,
       type,
       values,
       collectionId: savedCollectionEntity.id,
     }));
     const fieldEntities = fieldsDto.map(FieldsEntity.fromDto);
-    const savedFieldEntities = await FieldsEntity.save(fieldEntities);
+
+    await ItemsEntity.save(itemEntities);
+    await FieldsEntity.save(fieldEntities);
 
     return { id: savedCollectionEntity.id };
   }
 
 
-  Get('one/:id')
-  getOne() {
+  @Get('one/:id')
+  async getOne(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<any> {
+    return createQueryBuilder(CollectionsEntity, 'c')
+      .where('c.id = :id')
+      .setParameter('id', id)
+      .innerJoinAndSelect('c.items', 'items')
+      .innerJoinAndSelect('c.fields', 'fields')
+      .getOne();
+  }
 
+  @Get('page/:page/:limit')
+  async getPage(
+    @Param('page', ParseIntPipe) page: number,
+    @Param('limit', ParseIntPipe) limit: number,
+  ): Promise<any> {
+    return createQueryBuilder(CollectionsEntity, 'c')
+      .skip(page * limit)
+      .take(limit)
+      .innerJoinAndSelect('c.items', 'items')
+      .innerJoinAndSelect('c.fields', 'fields')
+      .getMany();
   }
 
   @Get()
@@ -101,3 +127,51 @@ export default class CollectionsController {
     return this.collectionsService.getCollection(collectionId);
   }
 }
+
+
+const a = [{
+  'id': 15,
+  'name': 'My new collection',
+  'description': 'This is collection of ...asdsada',
+  'theme': 'Alcohol',
+  'items': [{ 'id': 2, 'name': 'Initial name', 'image': '20.eacc39.logo.png' }, {
+    'id': 3,
+    'name': 'Initial name 2',
+    'image': '20.eacc39.logo.png',
+  }, { 'id': 4, 'name': 'Initial name 3', 'image': '20.eacc39.logo.png' }, {
+    'id': 5,
+    'name': 'Initial name 4',
+    'image': '20.eacc39.logo.png',
+  }],
+  'fields': [{ 'id': 2, 'name': 'test field', 'values': 'Default', 'type': 'string' }, {
+    'id': 3,
+    'name': 'test field',
+    'values': 'Default',
+    'type': 'string',
+  }, { 'id': 4, 'name': 'test field', 'values': 'Default', 'type': 'string' }, {
+    'id': 5,
+    'name': 'test field',
+    'values': 'Default',
+    'type': 'string',
+  }, { 'id': 6, 'name': 'test field', 'values': 'Default', 'type': 'string' }, {
+    'id': 7,
+    'name': 'test field',
+    'values': 'Default',
+    'type': 'string',
+  }, { 'id': 8, 'name': 'test field', 'values': 'Default', 'type': 'string' }, {
+    'id': 9,
+    'name': 'test field',
+    'values': 'Default',
+    'type': 'string',
+  }, { 'id': 10, 'name': 'test field', 'values': 'Default', 'type': 'string' }, {
+    'id': 11,
+    'name': 'test field',
+    'values': 'Default',
+    'type': 'string',
+  }, { 'id': 12, 'name': 'test field', 'values': 'Default', 'type': 'string' }, {
+    'id': 13,
+    'name': 'test field',
+    'values': 'Default',
+    'type': 'string',
+  }],
+}];

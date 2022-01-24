@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import CollectionsEntity from './collections.entity';
 import FieldsEntity from './fields.entity';
-import { IItemDto } from '../src/dto/create-item.dto';
+import { IItemEntityDto } from '../src/dto/item.dto';
 import { createIdModel } from '../src/utils/database.utils';
 
 @Entity()
@@ -31,7 +31,7 @@ export default class ItemsEntity extends BaseEntity
   })
   collection: CollectionsEntity;
 
-  static fromDto(dto: IItemDto): ItemsEntity {
+  static fromDto(dto: IItemEntityDto): ItemsEntity {
     const item = new ItemsEntity();
 
     item.name = dto.name;

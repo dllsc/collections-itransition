@@ -1,12 +1,18 @@
-import { EItemFieldType } from './create-collection.dto';
+import { EItemFieldType } from './collection.dto';
 
-export interface IFieldDto {
+export interface IItemFieldFormDto {
+  readonly id: string;
+  readonly name: string;
+  readonly type: EItemFieldType;
+  readonly values: any[];
+}
+
+export interface IFieldEntityDto {
   readonly name: string;
   readonly values: string[];
   readonly type: EItemFieldType;
   readonly collectionId: number;
 }
 
-export interface IFieldJsonDto extends IFieldDto {
-  readonly id: number;
+export interface IItemFieldDto extends IItemFieldFormDto {
 }

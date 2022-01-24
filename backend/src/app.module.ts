@@ -8,7 +8,6 @@ import UserEntity from '../db/user.entity';
 import { LoggedUserService } from './logged-user.service';
 import CollectionsModule from './Collections/collections.module';
 import CollectionsEntity from '../db/collections.entity';
-import ItemModule from './Items/item.module';
 import ItemsEntity from '../db/items.entity';
 import { ServeStaticModule } from '@nestjs/serve-static';
 
@@ -36,6 +35,7 @@ export class GlobalModule {
       entities: ['dist/**/*.entity{.ts,.js}'],
       autoLoadEntities: true,
       synchronize: true,
+      // logging: ['query'],
     }),
     TypeOrmModule.forFeature(
       [UserEntity, CollectionsEntity, ItemsEntity],
@@ -45,7 +45,6 @@ export class GlobalModule {
     }),
     GlobalModule,
     CollectionsModule,
-    ItemModule,
   ],
 })
 export class AppModule {
