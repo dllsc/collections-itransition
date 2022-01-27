@@ -35,7 +35,7 @@ export default function Login() {
   function saveLoginDataAndGoToCollections(token: string, userId: number) {
     localStorage.setItem('access_token', token);
     localStorage.setItem('userId', userId.toString());
-    navigate('/collections');
+    navigate('/collection/read/0/10');
   }
   const [pressed, setPressed] = useState(false);
   const icon = pressed ? <Visibility/> : <VisibilityOff/>;

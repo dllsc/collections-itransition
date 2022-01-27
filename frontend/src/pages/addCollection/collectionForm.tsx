@@ -2,7 +2,17 @@ import React from 'react';
 import { FormProvider, SubmitHandler, useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { MatButton, MatInput } from '../imports-material';
 import { ErrorMessage } from '@hookform/error-message';
-import { FormControlLabel, IconButton, Radio, RadioGroup, TextareaAutosize, TextField } from '@mui/material';
+import {
+  FormControlLabel,
+  Grid,
+  IconButton,
+  Radio,
+  RadioGroup,
+  TextareaAutosize,
+  TextField,
+  Select,
+  MenuItem, InputLabel, NativeSelect, Fab,
+} from '@mui/material';
 import { REQUIRE_MESSAGE } from '../../constants/constants';
 import {
   EItemFieldType,
@@ -10,9 +20,11 @@ import {
   ICollectionForm, ICollectionFormDto,
   IItemField,
 } from '../../components/CollectionForm/CollectionsForm.props';
-import { Delete } from '@mui/icons-material';
+import { Delete, ImportContacts } from '@mui/icons-material';
 import { randomString } from '../../components/CollectionItemForm/RandomString';
 import { post } from '../../axios-instance';
+import './collectionForm.styles.css';
+import AddIcon from '@mui/icons-material/Add';
 
 type WithId<TInitial> = TInitial & { id: string };
 
@@ -92,37 +104,69 @@ function ItemForm(props: IAddItemFormProps) {
   const { register, formState: { errors }, getValues, trigger } = useFormContext<ICollectionForm>();
 
 
-  return <div>
-    <h1>New Item</h1>
+  return <div className="item">
+    <div style={{ justifyItems: 'right' }}>
 
-    <div>
-      <MatInput {...register(`items.${props.index}.name`, required)} label="name item"/>
-      <ErrorMessage errors={errors}
-                    name={`items.${props.index}.name`}
-                    as="p"/>
     </div>
 
-    <div>
-      <MatInput type="file" {...register(`items.${props.index}.image`, required)}/>
-      <ErrorMessage errors={errors}
-                    name={`items.${props.index}.image`}
-                    as="p"/>
-    </div>
+    <Grid container>
+      <Grid item
+            xs={2}>
+        <div>
+          <MatInput {...register(`items.${props.index}.name`, required)} label="name item"/>
+          <ErrorMessage errors={errors}
+                        name={`items.${props.index}.name`}
+                        as="p"/>
+        </div>
+        <div>
+          <label htmlFor={`items.${props.index}.image`}>
+            <MatInput type="file" {...register(`items.${props.index}.image`, required)}
+                      style={{ display: 'none' }}
+                      id={`items.${props.index}.image`}/>
+            <Fab
+              size="small"
+              component="span"
+              aria-label="add"
+              variant="extended"
+            >
+              <AddIcon/> Upload photo
+            </Fab>
+            <ErrorMessage errors={errors}
+                          name={`items.${props.index}.image`}
+                          as="p"/>
+          </label>
+        </div>
 
-    <div>
-      {getValues().itemsFields.map((field, indexOfField) =>
-        <div key={field.id}>
-          {field.name}
-          <TextField type={getInputTypeByFieldType(field.type)}
-                     {...register(`itemsFields.${indexOfField}.values.${props.index}`, { onChange: () => trigger() })}/>
-        </div>,
-      )}
-    </div>
+      </Grid>
+      <Grid item
+            xs={1}/>
+      <Grid item
+            xs={8}>
 
-    <IconButton onClick={props.remove}
-                disabled={props.single}>
-      <Delete/>
-    </IconButton>
+        <Grid container>
+          {getValues().itemsFields.map((field, indexOfField) =>
+            <Grid item
+                  xs={4}
+                  key={field.id}>
+              <InputLabel variant="standard">{field.name}</InputLabel>
+              <TextField type={getInputTypeByFieldType(field.type)}
+                         {...register(`itemsFields.${indexOfField}.values.${props.index}`, { onChange: () => trigger() })}/>
+            </Grid>,
+          )}
+        </Grid>
+
+      </Grid>
+      <Grid item
+            xs={1}>
+        <IconButton
+          onClick={props.remove}
+          disabled={props.single}>
+          <Delete/>
+        </IconButton>
+      </Grid>
+    </Grid>
+
+
   </div>;
 }
 
@@ -150,12 +194,12 @@ function ItemFormsList() {
     })));
   };
 
-  return <>
+  return <>    <MatButton onClick={addInput}> + ITEM </MatButton>
+
     {itemForms.map((item, index) => <ItemForm key={item.id}
                                               index={index}
                                               remove={() => removeItem(index)}
                                               single={itemForms.length === 1}/>)}
-    <MatButton onClick={addInput}> ADD ITEM </MatButton>
   </>;
 }
 
@@ -178,21 +222,38 @@ function FieldForm(props: IItemFieldProps) {
   };
 
   return <div style={{ display: 'flex' }}>
-    {getValues().itemsFields[props.index].name}
+    {/*{getValues().itemsFields[props.index].name}*/}
 
-    <MatInput type="text"
-              {...register(`itemsFields.${props.index}.name`, { onBlur: updateValue })} />
+    <Grid container>
+      <Grid item
+            xs={3}>
+        <MatInput type="text"
+                  {...register(`itemsFields.${props.index}.name`, { onBlur: updateValue })} />
 
-    <RadioGroup style={{ flexDirection: 'row' }}>
-      <FormControlLabel control={createRadioWithType(EItemFieldType.STRING)}
-                        label="String"/>
-      <FormControlLabel control={createRadioWithType(EItemFieldType.DATE)}
-                        label="Date"/>
-      <FormControlLabel control={createRadioWithType(EItemFieldType.NUMBER)}
-                        label="Number"/>
-    </RadioGroup>
+      </Grid>
+      <Grid item
+            xs={1}/>
 
-    <Delete onClick={props.remove}/>
+      <Grid item
+            xs={7}>
+        <RadioGroup style={{ flexDirection: 'row' }}>
+          <FormControlLabel control={createRadioWithType(EItemFieldType.STRING)}
+                            label="String"/>
+          <FormControlLabel control={createRadioWithType(EItemFieldType.DATE)}
+                            label="Date"/>
+          <FormControlLabel control={createRadioWithType(EItemFieldType.NUMBER)}
+                            label="Number"/>
+        </RadioGroup>
+
+
+      </Grid>
+      <Grid item
+            xs={1}>
+        <Delete onClick={props.remove}/>
+      </Grid>
+    </Grid>
+
+
   </div>;
 }
 
@@ -246,31 +307,61 @@ export function CollectionForm() {
   return <FormProvider {...formControl}>
     <form onSubmit={handleSubmit(onSubmit)}
           className="form">
-      <h1>Collections</h1>
+      <h1>Create Collection</h1>
 
-      <pre>
-        {JSON.stringify(getValues(), null, 2)}
-      </pre>
+      {/*<pre>*/}
+      {/*  {JSON.stringify(getValues(), null, 2)}*/}
+      {/*</pre>*/}
 
-      <MatInput {...register('name', required)}
-                label="name collection"/>
-      <ErrorMessage errors={errors}
-                    name="name"
-                    as="p"/>
 
-      <TextareaAutosize {...register('description', required)}/>
-      <MatInput {...register('theme', required)}
-                label="theme"/>
+      <div className="collectionDescription">
+        <Grid container>
+          <Grid item
+                xs={4}>
+            <Grid container>
+              <Grid item
+                    xs={6}> <MatInput {...register('name', required)}
+                                      label="name collection"/>
+                <ErrorMessage errors={errors}
+                              name="name"
+                              as="p"/></Grid>
+              <Grid item
+                    xs={1}/>
+              <Grid item
+                    xs={4}>
+                <InputLabel variant="standard">Theme</InputLabel>
+                <NativeSelect
+                  {...register('theme', { required: true })}
+                >
+                  <option value="Alcohol">Alcohol</option>
+                  <option value="Book">Book</option>
+                </NativeSelect>
+              </Grid>
+              <Grid item
+                    xs={11}>
+                <TextareaAutosize {...register('description', required)} minRows={8}
+                                  style={{ width: '100%' }}/>
+              </Grid>
+              <MatButton type="submit">
+                Save Collection
+              </MatButton>
+            </Grid>
 
-      <FieldFormList/>
+          </Grid>
 
+
+          <Grid item
+                xs={8}>
+            <FieldFormList/>
+          </Grid>
+        </Grid>
+      </div>
       <ItemFormsList/>
+
 
       {isValid}
 
-      <MatButton type="submit">
-        Add Collection
-      </MatButton>
+
     </form>
   </FormProvider>;
 }
