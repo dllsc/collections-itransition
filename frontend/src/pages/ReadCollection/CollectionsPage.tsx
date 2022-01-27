@@ -1,9 +1,9 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { get } from '../../axios-instance';
 import { Badge, Card, CardActionArea, CardContent, Grid, Typography } from '@mui/material';
-import { ICollection } from './ReadOneCollection';
-import { blue } from '@mui/material/colors';
+import { ICollection } from './CollectionView';
+import { appHistory } from '../../utils/history.utils';
 
 
 interface ICardCollection {
@@ -16,10 +16,9 @@ interface ICardCollection {
 
 function CollectionCard(props: ICardCollection) {
   const href = `/collection/${props.id}`;
-  let navigate = useNavigate();
 
   function goToCollection() {
-    navigate(href);
+    appHistory.push(href);
   }
 
   return <Badge badgeContent={props.theme}
@@ -50,10 +49,8 @@ function CollectionCard(props: ICardCollection) {
 
 }
 
-export function ReadFullCollection() {
-
+export function CollectionsPage() {
   const params = useParams<{ page: string, limit: string }>();
-
   const [isLoading, setLoading] = useState(true);
   const [collections, setCollections] = useState<ICollection[]>([]);
 

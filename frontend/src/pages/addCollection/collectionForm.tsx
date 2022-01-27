@@ -357,11 +357,6 @@ export function CollectionForm() {
         </Grid>
       </div>
       <ItemFormsList/>
-
-
-      {isValid}
-
-
     </form>
   </FormProvider>;
 }

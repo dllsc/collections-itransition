@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { MatButton, MatInput } from '../imports-material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../../axios-instance';
 import { ErrorMessage } from '@hookform/error-message';
+import { appHistory } from '../../utils/history.utils';
+import { saveCredentialItems } from '../../utils/login.utils';
 
 type RegistrationForm = {
   email: string,
@@ -20,7 +21,6 @@ interface IToken {
 
 
 export default function Login() {
-  let navigate = useNavigate();
   const { register, handleSubmit, formState: { errors }, setError, getValues } = useForm<RegistrationForm>();
   const onSubmit: SubmitHandler<RegistrationForm> = data => {
     axiosInstance
@@ -33,9 +33,8 @@ export default function Login() {
   };
 
   function saveLoginDataAndGoToCollections(token: string, userId: number) {
-    localStorage.setItem('access_token', token);
-    localStorage.setItem('userId', userId.toString());
-    navigate('/collection/read/0/10');
+    saveCredentialItems(token, userId);
+    appHistory.push('/collection/read/0/10');
   }
   const [pressed, setPressed] = useState(false);
   const icon = pressed ? <Visibility/> : <VisibilityOff/>;
@@ -58,12 +57,14 @@ export default function Login() {
         required: REQUIRE_MESSAGE,
       })}
                 label="email"
+                name="email"
       />
       <ErrorMessage errors={errors} name="email" as="p"/>
 
 
       <MatInput {...register('password', { required: REQUIRE_MESSAGE })}
-                label="Password"
+                label="password"
+                name="password"
                 type={pressed ? 'text' : 'password'}
                 InputProps={{ endAdornment: optionsPassword }}
       />

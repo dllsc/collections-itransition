@@ -1,12 +1,13 @@
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { MatButton, MatInput } from '../../pages/imports-material';
-import { axiosInstance, post, tokenKey } from '../../axios-instance';
+import { axiosInstance, post} from '../../axios-instance';
 import { ErrorMessage } from '@hookform/error-message';
 import { TextareaAutosize } from '@mui/material';
 import { REQUIRE_MESSAGE } from '../../constants/constants';
 import { ICollectionForm, CollectionFormProps } from './CollectionsForm.props';
 import { CollectionItemForm } from '../CollectionItemForm/CollectionItemForm';
+import { TOKEN_LOCAL_STORAGE_KEY } from '../../utils/login.utils';
 
 type responseDataPost = {
   description: string;

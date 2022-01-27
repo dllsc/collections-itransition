@@ -118,7 +118,7 @@ function ItemCard(props: ItemCardProps) {
   </Card>;
 }
 
-export function ReadOneCollection() {
+export function CollectionView() {
   const params = useParams<{ id: string }>();
 
   const [isLoading, setLoading] = useState(true);

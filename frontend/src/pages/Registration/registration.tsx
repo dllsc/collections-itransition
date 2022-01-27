@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { MatButton, MatInput } from '../imports-material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../../axios-instance';
 import { ErrorMessage } from '@hookform/error-message';
+import { appHistory } from '../../utils/history.utils';
 
 type RegistrationForm = {
   email: string,
@@ -14,14 +14,11 @@ type RegistrationForm = {
 };
 
 export default function Registration() {
-
-  let navigate = useNavigate();
-
   const { register, handleSubmit, formState: { errors }, getValues, setError } = useForm<RegistrationForm>();
   const onSubmit: SubmitHandler<RegistrationForm> = data => {
     axiosInstance
       .post('auth/registration', data)
-      .then(e => e.statusText === 'Created' && navigate('/login')).catch(error => {
+      .then(e => e.statusText === 'Created' && appHistory.push('/login')).catch(error => {
       if (error.response) {
         setError('email', { type: error, message: error.response.data.message })
       }})

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { removeCredentialItems, TOKEN_LOCAL_STORAGE_KEY } from './utils/login.utils';
 
 export const axiosInstance = axios.create({
   baseURL: 'http://localhost:3000/',
@@ -12,11 +13,9 @@ export const get = <TResponse>(
   path: string
 ): Promise<TResponse> => axiosInstance.get<TResponse>(path).then(r => r.data);
 
-export const tokenKey = 'access_token';
-
 
 axiosInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem(tokenKey);
+  const token = localStorage.getItem(TOKEN_LOCAL_STORAGE_KEY);
 
   if (!token) {
     return config;
@@ -32,12 +31,14 @@ axiosInstance.interceptors.request.use((config) => {
 });
 
 axiosInstance.interceptors.response.use(r => r, (response) => {
-  console.log(JSON.parse(JSON.stringify(response)));
   const responseJSON = JSON.parse(JSON.stringify(response));
-  console.log(responseJSON.status);
-  if (responseJSON.status >= 400 && responseJSON.status < 404) {
-    // localStorage.removeItem(tokenKey);
-    // window.location.href = '/login';
+
+  console.log(responseJSON);
+
+  if ([401, 403].includes(responseJSON.status)) {
+    console.log(responseJSON.status);
+    removeCredentialItems();
+    window.location.href = '/login';
     // TODO: go to login page
   }
 

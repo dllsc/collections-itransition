@@ -1,30 +1,34 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Router, Route } from 'react-router-dom';
 import Registration from './pages/Registration/registration';
 import Login from './pages/Login/Login';
-import { ReadCollection } from './pages/ReadCollection/ReadCollection';
-import { CollectionsPage } from './pages/Collections/CollectionsPage';
-import { ReadOneCollection } from './pages/ReadCollection/ReadOneCollection';
-import { CollectionForm } from './pages/addCollection/collectionForm';
-import { ReadFullCollection } from './pages/ReadCollection/ReadFullCollection';
+import { CollectionView } from './pages/ReadCollection/CollectionView';
+import { CollectionsPage } from './pages/ReadCollection/CollectionsPage';
 import { CreateCollectionPage } from './pages/addCollection/CreateCollectionPage';
+import { appHistory } from './utils/history.utils';
+import { GuardedRouteComponent } from './components/GuardedRoute/guarded-route.component';
 
 // localhost:4200/collection/read/1
 
-function App() {
+export function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/collection/read/:page/:limit" element={<ReadFullCollection/>}/>
-        <Route path="/collection/add" element={<CreateCollectionPage/>}/>
-        <Route path="/collection/:id" element={<ReadOneCollection/>}/>
-        <Route path="/" element={<div>lalalallalal</div>}/>
-        <Route path="/login" element={<Login />} />
-        <Route path="/registration" element={<Registration />} />
-      </Routes>
-    </BrowserRouter>
+    <Router history={appHistory}>
+      <Route path="/collection/read/:page/:limit"
+             component={CollectionsPage}/>
+      <GuardedRouteComponent path="/collection/add"
+                             component={CreateCollectionPage}/>
+      <Route path="/collection/:id"
+             exact={true}
+             component={CollectionView}/>
+      <Route path="/"
+             exact={true}
+             component={() => <div>lalalallalal</div>}/>
+      <Route path="/login"
+             exact={true}
+             component={Login}/>
+      <Route path="/registration"
+             component={Registration}/>
+    </Router>
   );
 }
-
-export default App;
