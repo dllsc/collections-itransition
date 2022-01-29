@@ -32,44 +32,25 @@ export function ItemForm(props: IAddItemFormProps) {
 
 
   return <div className="item">
-    <div style={{ justifyItems: 'right' }}>
-
-    </div>
-
     <Grid container>
-      <Grid item
-            xs={2}>
+      <Grid container item
+            xs={12}>
         <div className="item__name">
           <TextField  {...register(`items.${props.index}.name`, required)} label="name item"/>
           <ErrorMessage errors={errors}
                         name={`items.${props.index}.name`}
                         as="p"/>
         </div>
-        <div>
-          <label htmlFor={`items.${props.index}.image`}>
-            <TextField type="file" {...register(`items.${props.index}.image`, required)}
-                       style={{ display: 'none' }}
-                       id={`items.${props.index}.image`}
-            />
-            <Fab
-              size={"medium"}
-              component="span"
-              aria-label="add"
-              variant="extended"
-            >
-              <AddIcon/> Upload photo
-            </Fab>
-            <ErrorMessage errors={errors}
-                          name={`items.${props.index}.image`}
-                          as="p"/>
-          </label>
-        </div>
 
+        <IconButton
+          style={{marginLeft:12}}
+          onClick={props.remove}
+          disabled={props.single}>
+          <Delete/>
+        </IconButton>
       </Grid>
       <Grid item
-            xs={1}/>
-      <Grid item
-            xs={8}>
+            xs={7}>
 
         <Grid container>
           {getValues().itemsFields.map((field, indexOfField) =>
@@ -78,7 +59,7 @@ export function ItemForm(props: IAddItemFormProps) {
                   key={field.id}
                   className="item__field"
             >
-              <TextField
+              <TextField style={{paddingLeft:10}}
                          type={getInputTypeByFieldType(field.type)}
                          label={field.name}
                          {...register(`itemsFields.${indexOfField}.values.${props.index}`, { onChange: () => trigger() })}/>
@@ -87,16 +68,30 @@ export function ItemForm(props: IAddItemFormProps) {
         </Grid>
 
       </Grid>
-      <Grid item
-            xs={1}>
-        <IconButton
-          onClick={props.remove}
-          disabled={props.single}>
-          <Delete/>
-        </IconButton>
-      </Grid>
+
+
+
+
     </Grid>
 
-
+    <div>
+      <label htmlFor={`items.${props.index}.image`}>
+        <TextField type="file" {...register(`items.${props.index}.image`, required)}
+                   style={{ display: 'none' }}
+                   id={`items.${props.index}.image`}
+        />
+        <Fab
+          size={"medium"}
+          component="span"
+          aria-label="add"
+          variant="extended"
+        >
+          <AddIcon/> Upload photo
+        </Fab>
+        <ErrorMessage errors={errors}
+                      name={`items.${props.index}.image`}
+                      as="p"/>
+      </label>
+    </div>
   </div>;
 }

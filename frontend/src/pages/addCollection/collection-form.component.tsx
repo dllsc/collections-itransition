@@ -70,9 +70,9 @@ export function CollectionForm(props: ICollectionFormProps) {
           className="form">
       <h1>Create Collection</h1>
 
-      <pre>
-        {JSON.stringify(getValues(), null, 2)}
-      </pre>
+      {/*<pre>*/}
+      {/*  {JSON.stringify(getValues(), null, 2)}*/}
+      {/*</pre>*/}
 
       <div className="collection-description">
         <Grid container>
@@ -108,14 +108,15 @@ export function CollectionForm(props: ICollectionFormProps) {
             style={{ flexGrow: 1 }} {...register('description', required)}
                             minRows={8}/>
         </Grid>
-        <MatButton type="submit">
-          Save Collection
-        </MatButton>
+
 
         <FieldFormList/>
 
       </div>
       <ItemFormsList/>
+      <MatButton type="submit">
+        Save Collection
+      </MatButton>
     </form>
   </FormProvider>;
 }

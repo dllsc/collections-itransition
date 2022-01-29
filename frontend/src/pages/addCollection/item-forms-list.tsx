@@ -36,11 +36,11 @@ export function ItemFormsList() {
     })));
   };
 
-  return <>    <MatButton onClick={addInput}> + ITEM </MatButton>
-
+  return <>
     {itemForms.map((item, index) => <ItemForm key={item.id}
                                               index={index}
                                               remove={() => removeItem(index)}
                                               single={itemForms.length === 1}/>)}
+    <MatButton onClick={addInput}> + ITEM </MatButton>
   </>;
 }

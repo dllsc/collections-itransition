@@ -46,22 +46,16 @@ export function FieldForm(props: IItemFieldProps) {
                   value={type}/>;
   };
 
-  return <div className="create-field-form-element"
-              style={{ display: 'flex' }}>
-    {/*{getValues().itemsFields[props.index].name}*/}
+  return <Grid container
+          wrap="nowrap"
+          className="create-field-form-element">
 
-    <Grid container
-          wrap="nowrap">
-      <Grid item
-            xs={3}>
         <TextField type="text"
-                   {...register(`itemsFields.${props.index}.name`, { onBlur: updateValue })} />
-      </Grid>
-      <Grid item
-            xs={2}/>
-      <Grid item
-            wrap="nowrap">
-        <RadioGroup style={{ flexDirection: 'row', flexWrap: 'nowrap' }}>
+                   {...register(`itemsFields.${props.index}.name`, { onBlur: updateValue })}
+        style={{flexGrow:1}}
+        />
+
+        <RadioGroup style={{ flexDirection: 'row', flexWrap: 'nowrap', marginLeft: 10 }}>
           <FormControlLabel control={createRadioWithType(EItemFieldType.STRING)}
                             label="String"/>
           <FormControlLabel control={createRadioWithType(EItemFieldType.DATE)}
@@ -69,12 +63,7 @@ export function FieldForm(props: IItemFieldProps) {
           <FormControlLabel control={createRadioWithType(EItemFieldType.NUMBER)}
                             label="Number"/>
         </RadioGroup>
-      </Grid>
 
-      <Grid item
-            xs={1}>
-        <Delete onClick={props.remove}/>
-      </Grid>
-    </Grid>
-  </div>;
+        <Delete onClick={props.remove} style={{marginTop:13}}/>
+    </Grid>;
 }
