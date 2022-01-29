@@ -224,15 +224,15 @@ function FieldForm(props: IItemFieldProps) {
   return <div style={{ display: 'flex' }}>
     {/*{getValues().itemsFields[props.index].name}*/}
 
-    <Grid container>
+    <Grid container wrap="nowrap">
       <Grid item
             xs={3}>
         <TextField type="text"
                    {...register(`itemsFields.${props.index}.name`, { onBlur: updateValue })} />
       </Grid>
 
-      <Grid item>
-        <RadioGroup style={{ flexDirection: 'row' }}>
+      <Grid item wrap="nowrap">
+        <RadioGroup style={{ flexDirection: 'row', flexWrap: 'nowrap' }}>
           <FormControlLabel control={createRadioWithType(EItemFieldType.STRING)}
                             label="String"/>
           <FormControlLabel control={createRadioWithType(EItemFieldType.DATE)}
@@ -310,43 +310,39 @@ export function CollectionForm() {
 
 
       <div className="collectionDescription">
+        <Grid container>
+          <Grid item
+                flexGrow={1}>
+            <TextField {...register('name', required)} fullWidth
+                                   label="name collection"/>
+            <ErrorMessage errors={errors}
+                          name="name"
+                          as="p"/></Grid>
+          <Grid item
+                xs={1}/>
+          <Grid item flexGrow={1}>
+            <FormControl fullWidth>
+              <InputLabel id="select-label">Theme</InputLabel>
+              <Select
+                labelId="select-label"
+                label="Theme"
+                {...register('theme', { required: true })}
+              >
+                <MenuItem value="Alcohol">Alcohol</MenuItem>
+                <MenuItem value="Book">Book</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+        </Grid>
 
-            <Grid container>
-              <Grid item
-                    xs={6}> <TextField {...register('name', required)}
-                                       label="name collection"/>
-                <ErrorMessage errors={errors}
-                              name="name"
-                              as="p"/></Grid>
-              <Grid item
-                    xs={1}/>
-              <Grid item
-                    xs={4}>
+        <Grid item container>
+          <TextareaAutosize style={{ flexGrow: 1 }} {...register('description', required)} minRows={8} />
+        </Grid>
+        <MatButton type="submit">
+          Save Collection
+        </MatButton>
 
-                <FormControl fullWidth>
-                  <InputLabel id="select-label">Theme</InputLabel>
-                <Select
-                  labelId="select-label"
-                  label="Theme"
-                  {...register('theme', { required: true })}
-                >
-                  <MenuItem value="Alcohol">Alcohol</MenuItem>
-                  <MenuItem value="Book">Book</MenuItem>
-                </Select>
-                </FormControl>
-
-              </Grid>
-              <Grid item
-                    xs={11}>
-                <TextareaAutosize {...register('description', required)} minRows={8}
-                                  style={{ width: '100%', marginTop: 25, marginBottom:10}}/>
-              </Grid>
-              <MatButton type="submit">
-                Save Collection
-              </MatButton>
-            </Grid>
-
-            <FieldFormList/>
+        <FieldFormList/>
 
       </div>
       <ItemFormsList/>
