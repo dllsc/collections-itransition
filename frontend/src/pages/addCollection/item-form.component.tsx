@@ -34,13 +34,14 @@ export function ItemForm(props: IAddItemFormProps) {
   return <div className="item">
     <Grid container>
       <Grid container item
-            xs={12}>
-        <div className="item__name">
-          <TextField  {...register(`items.${props.index}.name`, required)} label="name item"/>
+            xs={12}
+            className="item__name">
+
+          <TextField   {...register(`items.${props.index}.name`, required)} label="name item" style={{flexGrow:1}}/>
           <ErrorMessage errors={errors}
                         name={`items.${props.index}.name`}
                         as="p"/>
-        </div>
+
 
         <IconButton
           style={{marginLeft:12}}
@@ -50,16 +51,16 @@ export function ItemForm(props: IAddItemFormProps) {
         </IconButton>
       </Grid>
       <Grid item
-            xs={7}>
+            xs={12}>
 
         <Grid container>
           {getValues().itemsFields.map((field, indexOfField) =>
-            <Grid item
+            <Grid container item
                   xs={6}
                   key={field.id}
                   className="item__field"
             >
-              <TextField style={{paddingLeft:10}}
+              <TextField style={{paddingRight:10, flexGrow:1}}
                          type={getInputTypeByFieldType(field.type)}
                          label={field.name}
                          {...register(`itemsFields.${indexOfField}.values.${props.index}`, { onChange: () => trigger() })}/>
@@ -81,7 +82,7 @@ export function ItemForm(props: IAddItemFormProps) {
                    id={`items.${props.index}.image`}
         />
         <Fab
-          size={"medium"}
+          size={"large"}
           component="span"
           aria-label="add"
           variant="extended"

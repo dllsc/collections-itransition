@@ -5,6 +5,7 @@ import { createDefaultFieldFormValues, FieldForm } from './field-form.component'
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { MatButton } from '../imports-material';
 import React from 'react';
+import { Button } from '@mui/material';
 
 type WithId<TInitial> = TInitial & { id: string };
 
@@ -36,6 +37,6 @@ export function FieldFormList() {
                  remove={() => fieldsFormArray.remove(index)}/>,
     )}
 
-    <MatButton onClick={appendNewField}> ADD FIELD </MatButton>
+    <Button onClick={appendNewField}> CREATE FIELD </Button>
   </>;
 }
