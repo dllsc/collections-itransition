@@ -31,6 +31,7 @@ function createDefaultEditCollectionForm(collection: ICollection): ICollectionFo
     theme: collection.theme,
     description: collection.description,
     items: collection.items.map(item => ({
+      id: item.id,
       name: item.name,
       image: new DataTransfer().files,
     })),
@@ -50,7 +51,7 @@ export function CollectionForm(props: ICollectionFormProps) {
       ? createDefaultEditCollectionForm(props.initialEditValue)
       : createDefaultCollectionForm(),
   });
-  const { register, handleSubmit, formState: { errors, isValid }, getValues } = formControl;
+  const { register, handleSubmit, formState: { errors }, getValues } = formControl;
 
   const onSubmit: SubmitHandler<ICollectionForm> = (collectionForm: ICollectionForm) => {
     const images = getValues().items.map(item => item.image[0]);
@@ -71,9 +72,9 @@ export function CollectionForm(props: ICollectionFormProps) {
           className="form">
       <h1>Create Collection</h1>
 
-      {/*<pre>*/}
-      {/*  {JSON.stringify(getValues(), null, 2)}*/}
-      {/*</pre>*/}
+      <pre>
+        {JSON.stringify(getValues(), null, 2)}
+      </pre>
 
       <div className="collection-description">
         <Grid container>
@@ -107,8 +108,9 @@ export function CollectionForm(props: ICollectionFormProps) {
               container>
           <TextareaAutosize
             className="collection-description__textarea"
-            style={{ flexGrow: 1 }} {...register('description', required)}
-                            minRows={8}/>
+            {...register('description', required)}
+            style={{ flexGrow: 1 }}
+            minRows={8}/>
         </Grid>
 
 

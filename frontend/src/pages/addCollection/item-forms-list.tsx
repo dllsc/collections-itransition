@@ -8,6 +8,7 @@ import { IAddItemFormModel, ICollectionForm } from '../ReadCollection/models';
 
 export function createDefaultItemForm(): IAddItemFormModel {
   return {
+    id: Math.random(),
     name: 'Initial name',
     image: new DataTransfer().files,
   };
@@ -16,10 +17,6 @@ export function createDefaultItemForm(): IAddItemFormModel {
 export function ItemFormsList() {
   const { append, fields: itemForms, remove } = useFieldArray<ICollectionForm>({ name: 'items' });
   const { setValue, getValues } = useFormContext<ICollectionForm>();
-  const itemsFieldsFormArray = useFieldArray<ICollectionForm>({ name: 'itemsFields' });
-  // const itemsFieldsWithType = itemsFieldsFormArray.fields as IItemField[];
-
-  // console.log(itemsFieldsWithType);
 
   const addInput = () => {
     append(createDefaultItemForm());

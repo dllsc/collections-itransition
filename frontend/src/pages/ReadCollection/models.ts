@@ -23,6 +23,7 @@ export interface ICollection {
 }
 
 export interface IAddItemFormModel {
+  readonly id: number;
   readonly name: string;
   readonly image: FileList;
 }
