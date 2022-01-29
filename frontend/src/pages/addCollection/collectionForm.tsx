@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormProvider, SubmitHandler, useFieldArray, useForm, useFormContext } from 'react-hook-form';
-import { MatButton, MatInput } from '../imports-material';
+import { MatButton } from '../imports-material';
 import { ErrorMessage } from '@hookform/error-message';
 import {
   FormControlLabel,
@@ -11,7 +11,7 @@ import {
   TextareaAutosize,
   TextField,
   Select,
-  MenuItem, InputLabel, NativeSelect, Fab,
+  MenuItem, InputLabel, NativeSelect, Fab, FormControl,
 } from '@mui/material';
 import { REQUIRE_MESSAGE } from '../../constants/constants';
 import {
@@ -113,16 +113,16 @@ function ItemForm(props: IAddItemFormProps) {
       <Grid item
             xs={2}>
         <div>
-          <MatInput {...register(`items.${props.index}.name`, required)} label="name item"/>
+          <TextField {...register(`items.${props.index}.name`, required)} label="name item"/>
           <ErrorMessage errors={errors}
                         name={`items.${props.index}.name`}
                         as="p"/>
         </div>
         <div>
           <label htmlFor={`items.${props.index}.image`}>
-            <MatInput type="file" {...register(`items.${props.index}.image`, required)}
-                      style={{ display: 'none' }}
-                      id={`items.${props.index}.image`}/>
+            <TextField type="file" {...register(`items.${props.index}.image`, required)}
+                       style={{ display: 'none' }}
+                       id={`items.${props.index}.image`}/>
             <Fab
               size="small"
               component="span"
@@ -227,15 +227,11 @@ function FieldForm(props: IItemFieldProps) {
     <Grid container>
       <Grid item
             xs={3}>
-        <MatInput type="text"
-                  {...register(`itemsFields.${props.index}.name`, { onBlur: updateValue })} />
-
+        <TextField type="text"
+                   {...register(`itemsFields.${props.index}.name`, { onBlur: updateValue })} />
       </Grid>
-      <Grid item
-            xs={1}/>
 
-      <Grid item
-            xs={7}>
+      <Grid item>
         <RadioGroup style={{ flexDirection: 'row' }}>
           <FormControlLabel control={createRadioWithType(EItemFieldType.STRING)}
                             label="String"/>
@@ -244,9 +240,8 @@ function FieldForm(props: IItemFieldProps) {
           <FormControlLabel control={createRadioWithType(EItemFieldType.NUMBER)}
                             label="Number"/>
         </RadioGroup>
-
-
       </Grid>
+
       <Grid item
             xs={1}>
         <Delete onClick={props.remove}/>
@@ -309,19 +304,17 @@ export function CollectionForm() {
           className="form">
       <h1>Create Collection</h1>
 
-      {/*<pre>*/}
-      {/*  {JSON.stringify(getValues(), null, 2)}*/}
-      {/*</pre>*/}
+      <pre>
+        {JSON.stringify(getValues(), null, 2)}
+      </pre>
 
 
       <div className="collectionDescription">
-        <Grid container>
-          <Grid item
-                xs={4}>
+
             <Grid container>
               <Grid item
-                    xs={6}> <MatInput {...register('name', required)}
-                                      label="name collection"/>
+                    xs={6}> <TextField {...register('name', required)}
+                                       label="name collection"/>
                 <ErrorMessage errors={errors}
                               name="name"
                               as="p"/></Grid>
@@ -329,32 +322,32 @@ export function CollectionForm() {
                     xs={1}/>
               <Grid item
                     xs={4}>
-                <InputLabel variant="standard">Theme</InputLabel>
-                <NativeSelect
+
+                <FormControl fullWidth>
+                  <InputLabel id="select-label">Theme</InputLabel>
+                <Select
+                  labelId="select-label"
+                  label="Theme"
                   {...register('theme', { required: true })}
                 >
-                  <option value="Alcohol">Alcohol</option>
-                  <option value="Book">Book</option>
-                </NativeSelect>
+                  <MenuItem value="Alcohol">Alcohol</MenuItem>
+                  <MenuItem value="Book">Book</MenuItem>
+                </Select>
+                </FormControl>
+
               </Grid>
               <Grid item
                     xs={11}>
                 <TextareaAutosize {...register('description', required)} minRows={8}
-                                  style={{ width: '100%' }}/>
+                                  style={{ width: '100%', marginTop: 25, marginBottom:10}}/>
               </Grid>
               <MatButton type="submit">
                 Save Collection
               </MatButton>
             </Grid>
 
-          </Grid>
-
-
-          <Grid item
-                xs={8}>
             <FieldFormList/>
-          </Grid>
-        </Grid>
+
       </div>
       <ItemFormsList/>
     </form>

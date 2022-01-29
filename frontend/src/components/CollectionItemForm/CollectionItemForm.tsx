@@ -1,10 +1,11 @@
 import { ErrorMessage } from '@hookform/error-message';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { post } from '../../axios-instance';
-import { MatButton, MatInput } from '../../pages/imports-material';
+import { MatButton} from '../../pages/imports-material';
 import React from 'react';
 import { REQUIRE_MESSAGE } from '../../constants/constants';
 import {randomString} from "./RandomString";
+import { TextField } from '@mui/material';
 
 
 interface ItemForm {
@@ -46,9 +47,9 @@ export function CollectionItemForm(props: IAddItemProps) {
 
   return <form onSubmit={handleSubmit(onSubmit)} className="form">
         <h1>Set Item</h1>
-        <MatInput {...register('name', { required: REQUIRE_MESSAGE })} label="name item"/>
+        <TextField {...register('name', { required: REQUIRE_MESSAGE })} label="name item"/>
         <ErrorMessage errors={errors} name="name" as="p"/>
-        <MatInput type="file" {...register('image', { required: REQUIRE_MESSAGE })} label="imageUrl"/>
+        <TextField type="file" {...register('image', { required: REQUIRE_MESSAGE })} label="imageUrl"/>
         <MatButton type="submit">Add Item</MatButton>
       </form>;
 }

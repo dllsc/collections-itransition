@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { MatButton, MatInput } from '../imports-material';
+import { MatButton } from '../imports-material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { axiosInstance } from '../../axios-instance';
 import { ErrorMessage } from '@hookform/error-message';
 import { appHistory } from '../../utils/history.utils';
+import { TextField } from '@mui/material';
 
 type RegistrationForm = {
   email: string,
@@ -42,32 +43,32 @@ export default function Registration() {
 
       <h1>Registration</h1>
 
-      <MatInput {...register('email', {
+      <TextField {...register('email', {
         pattern: { value: /$^|.+@.+..+/, message: 'invalid' },
         required: REQUIRE_MESSAGE
       })}
-                label="email"
+                 label="email"
       />
       <ErrorMessage errors={errors} name="email" as="p"/>
 
-      <MatInput {...register('fullName', { required: REQUIRE_MESSAGE })}
-                label="fullName"/>
+      <TextField {...register('fullName', { required: REQUIRE_MESSAGE })}
+                 label="fullName"/>
       <ErrorMessage errors={errors} name="fullName" as="p"/>
 
-      <MatInput {...register('password', { required: REQUIRE_MESSAGE })}
-                label="Password"
-                type={pressed ? 'text' : 'password'}
-                InputProps={{ endAdornment: optionsPassword }}
+      <TextField {...register('password', { required: REQUIRE_MESSAGE })}
+                 label="Password"
+                 type={pressed ? 'text' : 'password'}
+                 InputProps={{ endAdornment: optionsPassword }}
       />
       <ErrorMessage errors={errors} name="password" as="p"/>
 
-      <MatInput {...register('repeatPassword', {
+      <TextField {...register('repeatPassword', {
         validate: v => v === getValues().password || 'The passwords do not match',
         required: REQUIRE_MESSAGE,
       })}
-                label="repeatPassword"
-                type={pressed ? 'text' : 'password'}
-                InputProps={{ endAdornment: optionsPassword }}
+                 label="repeatPassword"
+                 type={pressed ? 'text' : 'password'}
+                 InputProps={{ endAdornment: optionsPassword }}
       />
       <ErrorMessage errors={errors} name="repeatPassword" as="p"/>
 

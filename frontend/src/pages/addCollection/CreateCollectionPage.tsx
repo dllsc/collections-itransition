@@ -4,8 +4,8 @@ import { CollectionForm } from './collectionForm';
 export function CreateCollectionPage (){
   return <div>
     <Grid container>
-      <Grid item xs={3}/>
-      <Grid item xs={6}><CollectionForm/></Grid>
+      <Grid item xs={4}/>
+      <Grid item xs={4}><CollectionForm/></Grid>
     </Grid>
   </div>
 }

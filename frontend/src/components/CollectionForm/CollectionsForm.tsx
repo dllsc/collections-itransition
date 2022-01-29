@@ -1,9 +1,9 @@
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { MatButton, MatInput } from '../../pages/imports-material';
+import { MatButton } from '../../pages/imports-material';
 import { axiosInstance, post} from '../../axios-instance';
 import { ErrorMessage } from '@hookform/error-message';
-import { TextareaAutosize } from '@mui/material';
+import { TextareaAutosize, TextField } from '@mui/material';
 import { REQUIRE_MESSAGE } from '../../constants/constants';
 import { ICollectionForm, CollectionFormProps } from './CollectionsForm.props';
 import { CollectionItemForm } from '../CollectionItemForm/CollectionItemForm';
@@ -50,14 +50,14 @@ export function CollectionsForm({mode}:CollectionFormProps) {
   return (<>
       <form onSubmit={handleSubmit(onSubmit)} className="form">
         <h1>Collections</h1>
-        <MatInput {...register('name',
+        <TextField {...register('name',
           { required: REQUIRE_MESSAGE })}
-                  label="name collection"/>
+                   label="name collection"/>
         <ErrorMessage errors={errors} name="name" as="p"/>
         <TextareaAutosize {...register('description',
           { required: REQUIRE_MESSAGE })}
                           style={{ width: 170 }}  />
-        <MatInput {...register('theme', { required: REQUIRE_MESSAGE, })} label="theme"/>
+        <TextField {...register('theme', { required: REQUIRE_MESSAGE, })} label="theme"/>
         <MatButton type="submit">Add Collection</MatButton>
       </form>
 

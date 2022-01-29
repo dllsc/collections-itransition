@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { MatButton, MatInput } from '../imports-material';
+import { MatButton } from '../imports-material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { axiosInstance } from '../../axios-instance';
 import { ErrorMessage } from '@hookform/error-message';
 import { appHistory } from '../../utils/history.utils';
 import { saveCredentialItems } from '../../utils/login.utils';
+import { TextField } from '@mui/material';
 
 type RegistrationForm = {
   email: string,
@@ -52,21 +53,21 @@ export default function Login() {
           className="form">
       <h1>Login</h1>
 
-      <MatInput {...register('email', {
+      <TextField {...register('email', {
         pattern: { value: /$^|.+@.+..+/, message: 'invalid' },
         required: REQUIRE_MESSAGE,
       })}
-                label="email"
-                name="email"
+                 label="email"
+                 name="email"
       />
       <ErrorMessage errors={errors} name="email" as="p"/>
 
 
-      <MatInput {...register('password', { required: REQUIRE_MESSAGE })}
-                label="password"
-                name="password"
-                type={pressed ? 'text' : 'password'}
-                InputProps={{ endAdornment: optionsPassword }}
+      <TextField {...register('password', { required: REQUIRE_MESSAGE })}
+                 label="password"
+                 name="password"
+                 type={pressed ? 'text' : 'password'}
+                 InputProps={{ endAdornment: optionsPassword }}
       />
       <ErrorMessage errors={errors} name="password" as="p"/>
 
