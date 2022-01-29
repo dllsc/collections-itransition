@@ -8,12 +8,11 @@ import {
 } from 'typeorm';
 import CollectionsEntity from './collections.entity';
 import FieldsEntity from './fields.entity';
-import { IItemEntityDto } from '../src/dto/item.dto';
+import { IItemDto, IItemEntityDto } from '../src/dto/item.dto';
 import { createIdModel } from '../src/utils/database.utils';
 
 @Entity()
-export default class ItemsEntity extends BaseEntity
-{
+export default class ItemsEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -42,4 +41,11 @@ export default class ItemsEntity extends BaseEntity
     return item;
   }
 
+  toDto(): IItemDto {
+    return {
+      name: this.name,
+      image: this.image,
+      collectionID: this.collectionId,
+    };
+  }
 }

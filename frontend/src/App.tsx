@@ -1,13 +1,13 @@
 import React from 'react';
 import './App.css';
-import { Router, Route } from 'react-router-dom';
+import { Route, Router } from 'react-router-dom';
 import Registration from './pages/Registration/registration';
 import Login from './pages/Login/Login';
 import { CollectionView } from './pages/ReadCollection/CollectionView';
 import { CollectionsPage } from './pages/ReadCollection/CollectionsPage';
-import { CreateCollectionPage } from './pages/addCollection/CreateCollectionPage';
 import { appHistory } from './utils/history.utils';
 import { GuardedRouteComponent } from './components/GuardedRoute/guarded-route.component';
+import { CollectionForm } from './pages/addCollection/collection-form.component';
 
 // localhost:4200/collection/read/1
 
@@ -17,7 +17,7 @@ export function App() {
       <Route path="/collection/read/:page/:limit"
              component={CollectionsPage}/>
       <GuardedRouteComponent path="/collection/add"
-                             component={CreateCollectionPage}/>
+                             component={CollectionForm}/>
       <Route path="/collection/:id"
              exact={true}
              component={CollectionView}/>

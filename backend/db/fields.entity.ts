@@ -6,9 +6,10 @@ import {
   ManyToOne,
 } from 'typeorm';
 import ItemsEntity from './items.entity';
-import { IFieldEntityDto } from '../src/dto/field.dto';
+import { IFieldDto, IFieldEntityDto } from '../src/dto/field.dto';
 import CollectionsEntity from './collections.entity';
 import { createIdModel } from '../src/utils/database.utils';
+import { EItemFieldType } from '../src/dto/collection.dto';
 
 
 @Entity()
@@ -39,5 +40,15 @@ export default class FieldsEntity extends BaseEntity {
     field.collection = createIdModel<CollectionsEntity>({ id: dto.collectionId });
 
     return field;
+  }
+
+  toDto(): IFieldDto {
+    return {
+      id: this.id,
+      type: this.type as EItemFieldType,
+      name: this.name,
+      values: this.values.split(','),
+      collectionId: this.collectionId,
+    };
   }
 }

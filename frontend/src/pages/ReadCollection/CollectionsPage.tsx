@@ -2,8 +2,8 @@ import { useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { get } from '../../axios-instance';
 import { Badge, Card, CardActionArea, CardContent, Grid, Typography } from '@mui/material';
-import { ICollection } from './CollectionView';
 import { appHistory } from '../../utils/history.utils';
+import { ICollection } from './models';
 
 
 interface ICardCollection {

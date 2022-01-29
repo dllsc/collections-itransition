@@ -1,5 +1,5 @@
 import { IItemFormDto, IItemEntityDto} from './item.dto';
-import { IItemFieldFormDto } from './field.dto';
+import { IFieldDto, IItemFieldFormDto } from './field.dto';
 
 export enum EItemFieldType {
   DATE = 'date',
@@ -13,6 +13,7 @@ export interface ICollectionFormDataJsonDto {
 
 
 export interface ICollectionFormDto {
+  id?: number;
   name: string;
   description: string;
   theme: string;
@@ -27,10 +28,7 @@ export interface ICollectionEntityDto {
   readonly userId: number;
 }
 
-export interface ICollectionDto {
-  name: string;
-  description: string;
-  theme: string;
+export interface ICollectionDto extends ICollectionEntityDto {
   items: IItemEntityDto[];
-  itemsFields: IItemFieldFormDto[];
+  itemsFields: IFieldDto[];
 }

@@ -14,5 +14,6 @@ export interface IFieldEntityDto {
   readonly collectionId: number;
 }
 
-export interface IItemFieldDto extends IItemFieldFormDto {
+export interface IFieldDto extends IFieldEntityDto {
+  readonly id: number;
 }

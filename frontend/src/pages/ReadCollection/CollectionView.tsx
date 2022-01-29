@@ -1,9 +1,9 @@
-import { Badge, Button, Card, CardActions, CardContent, CardMedia, Grid, Typography } from '@mui/material';
-import Carousel from 'react-material-ui-carousel';
+import { Badge, Card, CardMedia, Grid } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { get } from '../../axios-instance';
+import { Field, ICollection, Item } from './models';
 // import * as imager from '../../../../backend/dist/images'
 export const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,28 +17,6 @@ export const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-export interface Item {
-  id: number;
-  name: string;
-  image: string;
-}
-
-export interface Field {
-  id: number;
-  name: string;
-  values: string;
-  type: string;
-}
-
-export interface ICollection {
-  id: number;
-  name: string;
-  description: string;
-  theme: string;
-  items: Item[];
-  fields: Field[];
-}
 
 interface ItemCardProps {
   name: string;

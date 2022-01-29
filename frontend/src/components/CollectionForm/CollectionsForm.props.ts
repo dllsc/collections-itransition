@@ -1,12 +1,9 @@
+import { EItemFieldType } from './EItemFieldType';
+import { ICollection } from '../../pages/ReadCollection/models';
+
 export interface IAddItemFormModel {
   readonly name: string;
   readonly image: FileList;
-}
-
-export enum EItemFieldType {
-  DATE = 'date',
-  NUMBER = 'number',
-  STRING = 'string',
 }
 
 export interface IItemField {
@@ -22,6 +19,7 @@ export interface ICollectionForm {
   theme: string,
   items: IAddItemFormModel[];
   itemsFields: IItemField[];
+  editCollection?: ICollection;
 }
 
 export interface IItemFormDto {

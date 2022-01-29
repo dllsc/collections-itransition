@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import UserEntity from './user.entity';
 import ItemsEntity from './items.entity';
-import { ICollectionEntityDto } from '../src/dto/collection.dto';
+import { ICollectionDto, ICollectionEntityDto } from '../src/dto/collection.dto';
 import FieldsEntity from './fields.entity';
 import { createIdModel } from '../src/utils/database.utils';
 
@@ -46,5 +46,16 @@ export default class CollectionsEntity extends BaseEntity {
     collection.description = dto.description;
 
     return collection;
+  }
+
+  toDto(): ICollectionDto {
+    return {
+      name: this.name,
+      theme: this.theme,
+      description: this.description,
+      items: this.items.map(item => item.toDto()),
+      userId: this.userId,
+      itemsFields: this.fields.map(fiend => fiend.toDto()),
+    };
   }
 }

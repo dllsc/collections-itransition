@@ -5,12 +5,10 @@ import {
   Param,
   ParseIntPipe,
   Post,
-  Req,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { CollectionsService } from './collections.service';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { LoggedUserService } from '../logged-user.service';
 import { FilesInterceptor } from '@nestjs/platform-express';
@@ -29,7 +27,6 @@ const IMG_DIR = './dist/images';
 @Controller('collection')
 export default class CollectionsController {
   constructor(
-    private readonly collectionsService: CollectionsService,
     private readonly loggedUserService: LoggedUserService,
   ) {
   }
@@ -51,7 +48,7 @@ export default class CollectionsController {
   @UseGuards(JwtAuthGuard)
   @Post()
   @UseInterceptors(FilesInterceptor('images'))
-  async postGenre(
+  async create(
     @Body() collectionFormDataJsonDto: ICollectionFormDataJsonDto,
     @UploadedFiles() files: Express.Multer.File[],
   ) {
@@ -59,7 +56,10 @@ export default class CollectionsController {
 
     const { userId } = this.loggedUserService;
     const collectionForm: ICollectionFormDto = JSON.parse(collectionFormDataJsonDto.collection);
-    const filenames = files.map(file => this.uploadFile(userId, file));
+    const filenames = files.map((file, index) => this.uploadFile(userId, file));
+
+    return {  };
+
     const collectionDto: ICollectionEntityDto = {
       userId,
       name: collectionForm.name,
@@ -93,12 +93,14 @@ export default class CollectionsController {
   async getOne(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<any> {
-    return createQueryBuilder(CollectionsEntity, 'c')
+    const result = await createQueryBuilder(CollectionsEntity, 'c')
       .where('c.id = :id')
       .setParameter('id', id)
       .innerJoinAndSelect('c.items', 'items')
       .innerJoinAndSelect('c.fields', 'fields')
       .getOne();
+
+    return result;
   }
 
   @Get('page/:page/:limit')
@@ -112,18 +114,5 @@ export default class CollectionsController {
       .innerJoinAndSelect('c.items', 'items')
       .innerJoinAndSelect('c.fields', 'fields')
       .getMany();
-  }
-
-  @Get()
-  @UseGuards(JwtAuthGuard)
-  getAll(@Req() request) {
-    const userID = this.loggedUserService.userId;
-    return this.collectionsService.getAllCollection(userID);
-  }
-
-  @Get(':collectionID')
-  @UseGuards(JwtAuthGuard)
-  getCollection(@Param('collectionID') collectionId: string) {
-    return this.collectionsService.getCollection(collectionId);
   }
 }
