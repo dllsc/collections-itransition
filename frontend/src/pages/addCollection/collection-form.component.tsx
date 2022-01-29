@@ -74,7 +74,7 @@ export function CollectionForm(props: ICollectionFormProps) {
         {JSON.stringify(getValues(), null, 2)}
       </pre>
 
-      <div className="collectionDescription">
+      <div className="collection-description">
         <Grid container>
           <Grid item
                 flexGrow={1}>
@@ -103,7 +103,9 @@ export function CollectionForm(props: ICollectionFormProps) {
 
         <Grid item
               container>
-          <TextareaAutosize style={{ flexGrow: 1 }} {...register('description', required)}
+          <TextareaAutosize
+            className="collection-description__textarea"
+            style={{ flexGrow: 1 }} {...register('description', required)}
                             minRows={8}/>
         </Grid>
         <MatButton type="submit">

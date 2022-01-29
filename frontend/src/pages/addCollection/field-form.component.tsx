@@ -46,7 +46,8 @@ export function FieldForm(props: IItemFieldProps) {
                   value={type}/>;
   };
 
-  return <div style={{ display: 'flex' }}>
+  return <div className="create-field-form-element"
+              style={{ display: 'flex' }}>
     {/*{getValues().itemsFields[props.index].name}*/}
 
     <Grid container
@@ -56,7 +57,8 @@ export function FieldForm(props: IItemFieldProps) {
         <TextField type="text"
                    {...register(`itemsFields.${props.index}.name`, { onBlur: updateValue })} />
       </Grid>
-
+      <Grid item
+            xs={2}/>
       <Grid item
             wrap="nowrap">
         <RadioGroup style={{ flexDirection: 'row', flexWrap: 'nowrap' }}>

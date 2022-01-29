@@ -39,8 +39,8 @@ export function ItemForm(props: IAddItemFormProps) {
     <Grid container>
       <Grid item
             xs={2}>
-        <div>
-          <TextField {...register(`items.${props.index}.name`, required)} label="name item"/>
+        <div className="item__name">
+          <TextField  {...register(`items.${props.index}.name`, required)} label="name item"/>
           <ErrorMessage errors={errors}
                         name={`items.${props.index}.name`}
                         as="p"/>
@@ -52,7 +52,7 @@ export function ItemForm(props: IAddItemFormProps) {
                        id={`items.${props.index}.image`}
             />
             <Fab
-              size="small"
+              size={"medium"}
               component="span"
               aria-label="add"
               variant="extended"
@@ -75,8 +75,11 @@ export function ItemForm(props: IAddItemFormProps) {
           {getValues().itemsFields.map((field, indexOfField) =>
             <Grid item
                   xs={6}
-                  key={field.id}>
-              <TextField type={getInputTypeByFieldType(field.type)}
+                  key={field.id}
+                  className="item__field"
+            >
+              <TextField
+                         type={getInputTypeByFieldType(field.type)}
                          label={field.name}
                          {...register(`itemsFields.${indexOfField}.values.${props.index}`, { onChange: () => trigger() })}/>
             </Grid>,
