@@ -1,12 +1,12 @@
-import { EItemFieldType } from '../../components/CollectionForm/EItemFieldType';
+import { EItemFieldType } from '../../enums/item-field.enum';
 import { useFormContext } from 'react-hook-form';
-import { ICollectionForm } from '../../components/CollectionForm/CollectionsForm.props';
 import { Fab, Grid, IconButton, InputLabel, TextField } from '@mui/material';
 import { ErrorMessage } from '@hookform/error-message';
 import AddIcon from '@mui/icons-material/Add';
 import { Delete } from '@mui/icons-material';
 import React from 'react';
 import { REQUIRE_MESSAGE } from '../../constants/constants';
+import { ICollectionForm } from '../ReadCollection/models';
 
 interface IAddItemFormProps {
   readonly index: number;

@@ -8,6 +8,7 @@ import { CollectionsPage } from './pages/ReadCollection/CollectionsPage';
 import { appHistory } from './utils/history.utils';
 import { GuardedRouteComponent } from './components/GuardedRoute/guarded-route.component';
 import { CollectionForm } from './pages/addCollection/collection-form.component';
+import { EditCollectionForm } from './pages/addCollection/edit-collection-form.component';
 
 // localhost:4200/collection/read/1
 
@@ -18,6 +19,8 @@ export function App() {
              component={CollectionsPage}/>
       <GuardedRouteComponent path="/collection/add"
                              component={CollectionForm}/>
+      <GuardedRouteComponent path="/collection/edit/:id"
+                             component={EditCollectionForm}/>
       <Route path="/collection/:id"
              exact={true}
              component={CollectionView}/>

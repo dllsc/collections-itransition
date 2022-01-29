@@ -1,11 +1,10 @@
-import { EItemFieldType } from '../../components/CollectionForm/EItemFieldType';
-import { ICollectionForm, IItemField } from '../../components/CollectionForm/CollectionsForm.props';
-import { randomString } from '../../components/CollectionItemForm/RandomString';
+import { EItemFieldType } from '../../enums/item-field.enum';
 import { createDefaultFieldFormValues, FieldForm } from './field-form.component';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { MatButton } from '../imports-material';
 import React from 'react';
 import { Button } from '@mui/material';
+import { randomString } from '../../utils/random.utils';
+import { ICollectionForm, IItemField } from '../ReadCollection/models';
 
 type WithId<TInitial> = TInitial & { id: string };
 

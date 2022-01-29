@@ -1,9 +1,9 @@
 import { useFormContext } from 'react-hook-form';
-import { ICollectionForm, IItemField } from '../../components/CollectionForm/CollectionsForm.props';
-import { EItemFieldType } from '../../components/CollectionForm/EItemFieldType';
+import { EItemFieldType } from '../../enums/item-field.enum';
 import { FormControlLabel, Grid, Radio, RadioGroup, TextField } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import React from 'react';
+import { ICollectionForm, IItemField } from '../ReadCollection/models';
 
 export interface IItemFieldProps {
   readonly field: IItemField;

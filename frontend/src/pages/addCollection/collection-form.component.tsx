@@ -3,11 +3,10 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { MatButton } from '../imports-material';
 import { ErrorMessage } from '@hookform/error-message';
 import { FormControl, Grid, InputLabel, MenuItem, Select, TextareaAutosize, TextField } from '@mui/material';
-import { ICollectionForm, ICollectionFormDto } from '../../components/CollectionForm/CollectionsForm.props';
 import { post } from '../../axios-instance';
 import './collectionForm.styles.css';
-import { ICollection } from '../ReadCollection/models';
-import { EItemFieldType } from '../../components/CollectionForm/EItemFieldType';
+import { ICollection, ICollectionForm, ICollectionFormDto } from '../ReadCollection/models';
+import { EItemFieldType } from '../../enums/item-field.enum';
 import { createDefaultFieldForm, FieldFormList } from './field-form-list.component';
 import { required } from './item-form.component';
 import { createDefaultItemForm, ItemFormsList } from './item-forms-list';
@@ -28,7 +27,9 @@ export interface ICollectionFormProps {
 
 function createDefaultEditCollectionForm(collection: ICollection): ICollectionForm {
   return {
-    ...collection,
+    name: collection.name,
+    theme: collection.theme,
+    description: collection.description,
     items: collection.items.map(item => ({
       name: item.name,
       image: new DataTransfer().files,
@@ -90,6 +91,7 @@ export function CollectionForm(props: ICollectionFormProps) {
             <FormControl fullWidth>
               <InputLabel id="select-label">Theme</InputLabel>
               <Select
+                defaultValue={getValues().theme}
                 labelId="select-label"
                 label="Theme"
                 {...register('theme', { required: true })}

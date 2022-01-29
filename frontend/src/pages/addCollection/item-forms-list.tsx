@@ -1,9 +1,10 @@
-import { IAddItemFormModel, ICollectionForm } from '../../components/CollectionForm/CollectionsForm.props';
+
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { createDefaultValueForType } from './field-form.component';
 import { MatButton } from '../imports-material';
 import { ItemForm } from './item-form.component';
 import React from 'react';
+import { IAddItemFormModel, ICollectionForm } from '../ReadCollection/models';
 
 export function createDefaultItemForm(): IAddItemFormModel {
   return {
