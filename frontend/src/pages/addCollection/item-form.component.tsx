@@ -49,7 +49,8 @@ export function ItemForm(props: IAddItemFormProps) {
           <label htmlFor={`items.${props.index}.image`}>
             <TextField type="file" {...register(`items.${props.index}.image`, required)}
                        style={{ display: 'none' }}
-                       id={`items.${props.index}.image`}/>
+                       id={`items.${props.index}.image`}
+            />
             <Fab
               size="small"
               component="span"
@@ -73,10 +74,10 @@ export function ItemForm(props: IAddItemFormProps) {
         <Grid container>
           {getValues().itemsFields.map((field, indexOfField) =>
             <Grid item
-                  xs={4}
+                  xs={6}
                   key={field.id}>
-              <InputLabel variant="standard">{field.name}</InputLabel>
               <TextField type={getInputTypeByFieldType(field.type)}
+                         label={field.name}
                          {...register(`itemsFields.${indexOfField}.values.${props.index}`, { onChange: () => trigger() })}/>
             </Grid>,
           )}
