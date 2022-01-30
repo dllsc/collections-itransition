@@ -1,0 +1,8 @@
+.fields {
+    max-height: 100px;
+    overflow-y: auto;
+}
+
+.collection-info{
+    width: 580px;
+}

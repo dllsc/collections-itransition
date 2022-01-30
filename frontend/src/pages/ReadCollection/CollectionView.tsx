@@ -1,21 +1,27 @@
-import { Badge, Card, CardMedia, Grid } from '@mui/material';
+import {
+  Badge,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Collapse,
+  Grid,
+  IconButton, Paper,
+  Typography,
+} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { HTMLProps, useEffect, useState } from 'react';
 import { get } from '../../axios-instance';
 import { Field, ICollection, Item } from './models';
+import ReactMarkdown from 'react-markdown';
 // import * as imager from '../../../../backend/dist/images'
-export const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 345,
-    minWidth: 100,
-    margin: '3rem',
-
-  },
-  media: {
-    height: 140,
-  },
-}));
+import './Read-collection.styles.css';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { styled } from '@mui/material/styles';
+import { IconButtonProps } from '@mui/material/IconButton/IconButton';
+import Carousel from 'react-material-ui-carousel';
+import { ImportContacts } from '@mui/icons-material';
 
 
 interface ItemCardProps {
@@ -55,45 +61,124 @@ export interface ICardItemProps {
 //   </Carousel>;
 // }
 
+interface ExpandProps {
+  expand: boolean;
+}
+
+const ExpandMore = styled((props: ExpandProps & IconButtonProps) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  marginLeft: 'auto',
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
+
 function CollectionInfo(props: IInfoCollectionProps) {
-  return <div className="collectionInfo">
-    <Badge badgeContent={props.theme}
-           color="secondary"
-           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
-      <h1>Collection: {props.name}</h1>
-    </Badge>
-    <p>{props.description}</p>
+  return <div className="collection-info"
+              style={{ textAlign: 'center' }}>
+    <div style={{ borderBottom: '2px solid white', textAlign: 'center', paddingBottom: '20px' }}>
+      <Typography display={'inline'}
+                  variant="h3"
+                  color={'white'}
+                  style={{ textShadow: '2px 2px 4px black' }}>
+        {props.name}
+      </Typography>
+    </div>
+    <Typography variant="body1"
+                color={'white'}
+                style={{ textShadow: '2px 2px 4px black', paddingTop: '20px' }}>
+      {props.description}
+    </Typography>
+    <Typography color={'white'}
+                style={{ textShadow: '2px 2px 4px black', paddingTop: '20px' }}>
+      Theme: {props.theme}
+    </Typography>
+    {/*<ReactMarkdown>*/}
+    {/*  # Hello, *world**/}
+    {/*</ReactMarkdown>*/}
   </div>;
 }
 
 function FieldItemCard(props: FieldItemCardProps) {
   return <div>
+
     <p>{props.name}: {props.values.split(',')[props.valuesId]}</p>
+
   </div>;
 }
+
 // ${props.image}
 function ItemCard(props: ItemCardProps) {
-  const image = `../../../../backend/dist/images/4d82df.3.png`
-  return <Card variant="outlined">
-    <Grid container>
-      <Grid item
-            xs={4}>
-        <h3>{props.name}</h3>
-      </Grid>
-      <Grid item
-            xs={4}>
-        {props.fields.map(f => <FieldItemCard id={f.id}
-                                              name={f.name}
-                                              values={f.values}
-                                              type={f.type}
-                                              valuesId={props.index}/>)}
-      </Grid>
-      <Grid item
-            xs={4}>
-        <CardMedia component="img" height="140" image='/backend/dist/images/4d82df.3.png'/>
-      </Grid>
-    </Grid>
-  </Card>;
+  const [expanded, setExpanded] = useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
+  return <Paper style={{ backgroundImage: 'url(https://w-dog.ru/wallpapers/2/12/437209449449415.jpg)' }}>
+    <div style={{ height: '33.3vh', textAlign: 'center' }}>
+      <div style={{ borderBottom: '2px solid white', textAlign: 'center', paddingTop: '20px' }}>
+        <Typography display={'inline'}
+                    variant="h3"
+                    color={'white'}
+                    style={{ textShadow: '3px 3px 7px black', paddingTop: '10vw' }}>
+          {props.name}
+        </Typography>
+      </div>
+
+      <ExpandMore
+        expand={expanded}
+        onClick={handleExpandClick}
+        aria-expanded={expanded}
+        aria-label="show more"
+      >
+        <ExpandMoreIcon style={{ color: 'white' }}/>
+      </ExpandMore>
+
+
+      <div style={{ position: 'relative' }}>
+
+      </div>
+      <Collapse in={expanded}
+                timeout="auto"
+                style={{
+
+                  position: 'absolute',
+                  background: 'white',
+                  width: '49vw',
+                  border: '1px solid lightgray',
+                  borderRadius: '23px',
+                  marginLeft: '15px',
+                }}
+      >
+
+        <Carousel indicators={false}>
+          {props.fields.map(f => <FieldItemCard
+            key={f.id}
+            id={f.id}
+            name={f.name}
+            values={f.values}
+            type={f.type}
+            valuesId={props.index}/>)}
+        </Carousel>
+        {/*{props.fields.map(f => <FieldItemCard id={f.id}*/}
+        {/*                                      name={f.name}*/}
+        {/*                                      values={f.values}*/}
+        {/*                                      type={f.type}*/}
+        {/*                                      valuesId={props.index}/>)}*/}
+
+      </Collapse>
+
+    </div>
+
+
+    {/*<ReactMarkdown>*/}
+    {/*  # Hello, *world**/}
+    {/*</ReactMarkdown>*/}
+  </Paper>;
 }
 
 export function CollectionView() {
@@ -114,27 +199,32 @@ export function CollectionView() {
     return <div>Loading...</div>;
   }
 
-  return <>
-    <Grid container>
-      <Grid item
-            xs={3}/>
-      <Grid item
-            xs={6}>
-        {collection && <div className="oneCollection">
-          <CollectionInfo name={collection.name}
-                          theme={collection.theme}
-                          description={collection.description}/>
-          {collection.items.map((i, index) => <ItemCard name={i.name}
-                                                        image={i.image}
-                                                        fields={collection.fields}
-                                                        index={index}/>)}
-        </div>
+  return <Paper style={{ backgroundImage: 'url(https://w-dog.ru/wallpapers/2/12/437209449449415.jpg)' }}>
+    <div style={{ display: 'flex', flexDirection: 'row' }}>
+      <div style={{ height: '100vh', width: '50vw', position: 'relative' }}>
+        {collection &&
+          <div style={{ position: 'absolute', top: '50%', marginTop: '-100px', left: '50%', marginLeft: '-290px' }}>
+            <CollectionInfo
+              name={collection.name}
+              theme={collection.theme}
+              description={collection.description}/>
+          </div>
         }
+      </div>
 
-      </Grid>
 
-    </Grid>
-  </>;
+      {collection && <div className="oneCollection">
 
+        {collection.items.map((i, index) => <ItemCard
+          key={i.id}
+          name={i.name}
+          image={i.image}
+          fields={collection.fields}
+          index={index}/>,
+        )}
+      </div>
+      }
+    </div>
+  </Paper>;
 }
 
