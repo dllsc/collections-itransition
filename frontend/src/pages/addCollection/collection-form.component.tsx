@@ -1,4 +1,4 @@
-import React, { HTMLProps, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { MatButton } from '../imports-material';
 import { ErrorMessage } from '@hookform/error-message';
@@ -11,6 +11,7 @@ import { createDefaultFieldForm, FieldFormList } from './field-form-list.compone
 import { required } from './item-form.component';
 import { createDefaultItemForm, ItemFormsList } from './item-forms-list';
 import MDEditor from '@uiw/react-md-editor';
+import Button from '@mui/material/Button';
 
 function createDefaultCollectionForm(): ICollectionForm {
   return {
@@ -140,9 +141,12 @@ export function CollectionForm(props: ICollectionFormProps) {
         </div>
 
         <ItemFormsList/>
-        <MatButton type="submit">
+        <Button variant="contained"
+                type="submit">
           Save Collection
-        </MatButton>
+        </Button>
+
+        <div style={{ height: 150 }}/>
       </div>
     </form>
   </FormProvider>;

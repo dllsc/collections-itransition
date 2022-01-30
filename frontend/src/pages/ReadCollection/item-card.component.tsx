@@ -40,14 +40,16 @@ export function ItemCard(props: ItemCardProps) {
       </Typography>
     </div>
 
-    <Collapse in={expanded}
-              timeout="auto">
-      {props.fields.map(field =>
-        <FieldItemCard key={field.id}
-                       index={props.index}
-                       field={field}/>,
-      )}
-    </Collapse>
+    <div>
+      <Collapse in={expanded}
+                timeout="auto">
+        {props.fields.map(field =>
+          <FieldItemCard key={field.id}
+                         index={props.index}
+                         field={field}/>,
+        )}
+      </Collapse>
+    </div>
 
     <div>
       <ExpandMore
