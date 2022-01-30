@@ -39,7 +39,7 @@ export default function Login() {
 
   function saveLoginDataAndGoToCollections(token: string, userId: number) {
     saveCredentialItems(token, userId);
-    appHistory.push('/collection/read/0/10');
+    appHistory.push('/collection/all/0/0');
   }
 
   const [pressed, setPressed] = useState(false);
@@ -53,7 +53,7 @@ export default function Login() {
 
 
   return <div className="login">
-    <form onSubmit={handleSubmit(onSubmit)}
+    <form onSubmit={handleSubmit(onSubmit, () => {})}
           className="login__form">
       <h1 className="login__button">Login</h1>
 

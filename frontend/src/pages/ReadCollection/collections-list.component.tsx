@@ -1,9 +1,17 @@
 import { useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { get } from '../../axios-instance';
-import { Badge, Card, CardActionArea, CardContent, Grid, Typography } from '@mui/material';
+import { Badge, Card, CardActionArea, CardContent, Grid, IconButton, Typography } from '@mui/material';
 import { appHistory } from '../../utils/history.utils';
 import { ICollection } from './models';
+import { imageToBackground } from '../../utils/styles.utils';
+import Button from '@mui/material/Button';
+import {
+  ArrowBackIos,
+  ArrowForwardIos, CreateNewFolder, CreateSharp,
+  Edit,
+  FavoriteBorder,
+} from '@mui/icons-material';
 
 
 interface ICardCollection {
@@ -19,31 +27,61 @@ function CollectionCard(props: ICardCollection) {
 
   const goToCollection = () => appHistory.push(href);
 
-  return <Badge badgeContent={props.theme}
-                color="secondary">
-    <Card sx={{ width: 300, background: '#f0bdfc9c' }}>
+  return (
 
-      <CardActionArea onClick={goToCollection}
-                      sx={{ height: 300 }}>
-        <CardContent>
+    <div style={{
+      textAlign: 'center',
+      background: 'url(https://wallpaperaccess.com/full/4356359.jpg)',
+      paddingTop: 15,
+      marginBottom: 15,
+      paddingBottom: 15,
+      border: '1px solid gray',
+    }}>
 
-          <Typography gutterBottom
-                      variant="h4"
-                      component="div"
-                      align="center"
-          >
+      <Grid container>
+        <Grid item
+              xs={2}>
+          <Button variant="outlined"
+                  size="large"
+                  color="primary"
+                  onClick={() => appHistory.push(`/collection/edit/${props.id}`)}>
+            <Edit/> Edit
+          </Button>
+        </Grid>
+        <Grid item
+              xs={8}>
+          <Typography display={'inline'}
+                      variant="h3"
+                      color={'white'}
+                      style={{ textShadow: '2px 2px 4px black', textDecoration: '3px underline' }}>
             {props.name}
           </Typography>
-
-          <Typography variant="body2"
-                      color="text.secondary">
-            {props.description}
+          <Typography color={'white'}
+                      variant="h5"
+                      style={{ textShadow: '2px 2px 4px black', paddingTop: '20px' }}>
+            {props.theme}
           </Typography>
-        </CardContent>
-      </CardActionArea>
+        </Grid>
+        <Grid item
+              xs={2}>
+          <Button
+            style={{ marginRight: 5 }}
+            onClick={goToCollection}
+            variant="outlined"
+            size="large"
+            color="primary">
+            Read
+          </Button>
+          <Button
+            variant="outlined"
+            size="large"
+            color="error">
+            <FavoriteBorder/> Like
+          </Button>
+        </Grid>
+      </Grid>
 
-    </Card>
-  </Badge>;
+    </div>);
 
 }
 
@@ -63,42 +101,45 @@ export function CollectionsListComponent() {
     return <div>Loading...</div>;
   }
 
-  return <div>
-    <h1>Collections Page</h1>
+  return <>
 
-    <Grid container spacing={3}>
 
-    <Grid item
-          xs={3}/>
-    <Grid item
-          xs={7}>
+    <Grid container
+          spacing={0}
+          alignItems="center"
+          style={{
 
-      <div className="collections">
-        <Grid container
-              spacing={3}
-              >
-
-          {collections.map(c => (<Grid item
-                                       xs={4}>
-              <div key={c.id}>
-
-                <CollectionCard name={c.name}
-                                theme={c.theme}
-                                description={c.description}
-                                id={c.id}/>
-              </div>
-            </Grid>
-          ))}
-        </Grid>
-      </div>
-
+          }}>
+      <Grid item
+            xs={1}
+            style={{ textAlign: 'center' }}>
+        <IconButton size={'large'}><ArrowBackIos/></IconButton>
+      </Grid>
+      <Grid item
+            xs={10}
+      style={{height: '100vh', overflowY: 'auto'}}>
+        <div style={{ textAlign: 'right', paddingBottom: 15, paddingTop: 25 }}>
+          <IconButton color={'default'}
+                      onClick={() => appHistory.push(`/collection/add`)}>
+            <CreateSharp/> Create New
+          </IconButton>
+        </div>
+        {collections.map(c => <CollectionCard name={c.name}
+                                              description={c.description}
+                                              theme={c.theme}
+                                              id={c.id}/>)}
+      </Grid>
+      <Grid item
+            xs={1}
+            style={{ textAlign: 'center' }}>
+        <IconButton size={'large'}
+                    onClick={() => console.log('hahaha')}>
+          <ArrowForwardIos/>
+        </IconButton>
+      </Grid>
     </Grid>
 
 
-    <Grid item
-          xs={2}/>
-      </Grid>
-
-  </div>;
+  </>;
 
 }
