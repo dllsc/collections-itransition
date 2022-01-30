@@ -104,9 +104,7 @@ function CollectionInfo(props: IInfoCollectionProps) {
 
 function FieldItemCard(props: FieldItemCardProps) {
   return <div>
-
     <p>{props.name}: {props.values.split(',')[props.valuesId]}</p>
-
   </div>;
 }
 
@@ -147,7 +145,7 @@ function ItemCard(props: ItemCardProps) {
                 style={{
 
                   position: 'absolute',
-                  background: 'white',
+                  background: 'rgb(255,255,255,0.4)',
                   width: '49vw',
                   border: '1px solid lightgray',
                   borderRadius: '23px',
