@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { HTMLProps, useEffect, useState } from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { MatButton } from '../imports-material';
 import { ErrorMessage } from '@hookform/error-message';
@@ -91,11 +91,11 @@ function DescriptionEditor() {
     setValue('description', markdown);
   }, [markdown]);
 
-  return <Grid item
-               container>
-    <MDEditor value={markdown}
+  return <div className="collection-description-editor">
+    <MDEditor style={{ width: '100%' }}
+              value={markdown}
               onChange={value => value && setMarkdown(value)}/>
-  </Grid>;
+  </div>;
 }
 
 export function CollectionForm(props: ICollectionFormProps) {
@@ -109,37 +109,40 @@ export function CollectionForm(props: ICollectionFormProps) {
   return <FormProvider {...formHook}>
     <form onSubmit={handleSubmit(saveCollection)}
           className="form">
-      <h1>Create Collection</h1>
+      <div className="form-container">
+        <h1>Create Collection</h1>
 
-      <pre>
-        {JSON.stringify(getValues(), null, 2)}
-      </pre>
+        {/*<pre>*/}
+        {/*  {JSON.stringify(getValues(), null, 2)}*/}
+        {/*</pre>*/}
 
-      <div className="collection-description">
-        <Grid container>
-          <Grid item
-                flexGrow={1}>
-            <TextField {...register('name', required)} fullWidth
-                       label="name collection"/>
-            <ErrorMessage errors={errors}
-                          name="name"
-                          as="p"/></Grid>
-          <Grid item
-                xs={1}/>
-          <Grid item
-                flexGrow={1}>
-            <ThemeControl/>
+        <div className="collection-description">
+          <Grid container>
+            <Grid item
+                  flexGrow={1}>
+              <TextField {...register('name', required)} fullWidth
+                         label="name collection"/>
+              <ErrorMessage errors={errors}
+                            name="name"
+                            as="p"/></Grid>
+            <Grid item
+                  xs={1}/>
+            <Grid item
+                  flexGrow={1}>
+              <ThemeControl/>
+            </Grid>
           </Grid>
-        </Grid>
 
-        <DescriptionEditor/>
-        <FieldFormList/>
+          <DescriptionEditor/>
 
+          <FieldFormList/>
+        </div>
+
+        <ItemFormsList/>
+        <MatButton type="submit">
+          Save Collection
+        </MatButton>
       </div>
-      <ItemFormsList/>
-      <MatButton type="submit">
-        Save Collection
-      </MatButton>
     </form>
   </FormProvider>;
 }

@@ -16,10 +16,7 @@ function CollectionViewContent({ collection }: ICollectionViewContentParams) {
     backgroundImage: imageToBackground(collection.items[0].image)
   }}>
     <div className="collection-view__content">
-      <CollectionInfo
-        name={collection.name}
-        theme={collection.theme}
-        description={collection.description}/>
+      <CollectionInfo collection={collection}/>
 
       <div className="collection-view__items-hide-scroll-wrapper">
         <div className="collection-view__items">
