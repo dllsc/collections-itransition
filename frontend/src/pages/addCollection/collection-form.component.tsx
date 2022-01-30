@@ -28,6 +28,7 @@ export interface ICollectionFormProps {
 
 function createDefaultEditCollectionForm(collection: ICollection): ICollectionForm {
   return {
+    id: collection.id,
     name: collection.name,
     theme: collection.theme,
     description: collection.description,

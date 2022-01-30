@@ -36,6 +36,7 @@ export interface IItemField {
 }
 
 export interface ICollectionForm {
+  id?: number;
   name: string,
   description: string,
   theme: string,
