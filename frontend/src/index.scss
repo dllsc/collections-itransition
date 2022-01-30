@@ -72,6 +72,10 @@ code {
 .collection-view__toolbar {
   display: flex;
   flex-direction: row;
+
+  > * {
+    margin-right: 10px;
+  }
 }
 
 .collection-view__field {
@@ -109,10 +113,6 @@ code {
   background: linear-gradient(to bottom, aquamarine, orangered);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-}
-
-.collection-view__like {
-  margin-left: 10px;
 }
 
 .collection-view__title {

@@ -64,41 +64,9 @@ export function CollectionsListComponent() {
   }
 
   return <div>
-    <h1>Collections Page</h1>
+    <div>
 
-    <Grid container spacing={3}>
-
-    <Grid item
-          xs={3}/>
-    <Grid item
-          xs={7}>
-
-      <div className="collections">
-        <Grid container
-              spacing={3}
-              >
-
-          {collections.map(c => (<Grid item
-                                       xs={4}>
-              <div key={c.id}>
-
-                <CollectionCard name={c.name}
-                                theme={c.theme}
-                                description={c.description}
-                                id={c.id}/>
-              </div>
-            </Grid>
-          ))}
-        </Grid>
-      </div>
-
-    </Grid>
-
-
-    <Grid item
-          xs={2}/>
-      </Grid>
-
+    </div>
   </div>;
 
 }

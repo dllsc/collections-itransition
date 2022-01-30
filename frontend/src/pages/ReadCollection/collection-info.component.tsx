@@ -1,7 +1,7 @@
-import { IconButton, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import MDEditor from '@uiw/react-md-editor';
 import { ICollection, Item } from './models';
-import { Edit, FavoriteBorder } from '@mui/icons-material';
+import { ArrowBack, Edit, FavoriteBorder } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import { appHistory } from '../../utils/history.utils';
 import { isLoggedIn } from '../../utils/login.utils';
@@ -15,22 +15,31 @@ interface ICollectionInfoToolbarProps {
 }
 
 function CollectionToolbar({ collection }: ICollectionInfoToolbarProps) {
+  const marginRight = 10;
+
   return <div className="collection-view__toolbar">
     <Button variant="outlined"
+            style={{ marginRight }}
+            size="large"
+            color="secondary"
+            onClick={() => appHistory.goBack()}>
+      <ArrowBack/> Go Back
+    </Button>
+
+    <Button variant="outlined"
+            style={{ marginRight }}
             size="large"
             color="primary"
             onClick={() => appHistory.push(`/collection/edit/${collection.id}`)}>
       <Edit/> Edit
     </Button>
 
-    <div className="collection-view__like">
-      <Button
-        variant="outlined"
-        size="large"
-        color="error">
-        <FavoriteBorder/> Like
-      </Button>
-    </div>
+    <Button
+      variant="outlined"
+      size="large"
+      color="error">
+      <FavoriteBorder/> Like
+    </Button>
   </div>;
 }
 
