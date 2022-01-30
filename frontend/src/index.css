@@ -1,15 +1,23 @@
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow: hidden;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  monospace;
 }
 
 /*#root .MuiFormControl-root {*/
@@ -26,6 +34,91 @@ code {
   padding: 0 0 0 0;
 }
 
-.oneCollection {
+.collection-view__items-hide-scroll-wrapper {
+  height: 100vh;
   width: 50vw;
+}
+
+.collection-view__items {
+  width: calc(50vw + 20px);
+  height: 100vh;
+  overflow-y: scroll;
+}
+
+.collection-view__info {
+  height: 100vh;
+  width: 50vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.collection-view {
+  background-size: cover;
+}
+
+.collection-view__item {
+  background-size: cover;
+  padding: 20px;
+  height: 20vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  /*text-align: 'center';*/
+}
+
+.collection-view__field {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 2px solid gray;
+  height: 50px;
+
+  color: white;
+}
+
+.collection-view__field-value {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.collection-view__content {
+  display: flex;
+  flex-direction: row;
+  backdrop-filter: blur(10px);
+}
+
+.collection-view__field-title {
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  margin-right: 15px;
+
+  background: linear-gradient(to bottom, aquamarine, orangered);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.collection-view__title {
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.collection-view__description {
+  color: white;
+}
+
+#root {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 }

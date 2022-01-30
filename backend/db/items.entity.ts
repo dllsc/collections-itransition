@@ -36,7 +36,7 @@ export default class ItemsEntity extends BaseEntity {
     item.name = dto.name;
     item.image = dto.image;
 
-    item.collection = createIdModel<CollectionsEntity>({ id: dto.collectionID });
+    item.collection = createIdModel<CollectionsEntity>({ id: dto.collectionId });
 
     return item;
   }
@@ -45,7 +45,7 @@ export default class ItemsEntity extends BaseEntity {
     return {
       name: this.name,
       image: this.image,
-      collectionID: this.collectionId,
+      collectionId: this.collectionId,
     };
   }
 }

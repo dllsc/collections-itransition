@@ -3,8 +3,8 @@ import { Close, Save } from '@mui/icons-material';
 import { ImageInput } from './image-input.component';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { ICollectionForm } from '../ReadCollection/models';
-import { apiUrl } from '../../environment-variables';
 import Button from '@mui/material/Button';
+import { getImageUrl } from '../../utils/image.utils';
 
 export interface IImagePreviewProps {
   readonly itemIndex: number;
@@ -19,7 +19,7 @@ export function ImagePreview(props: IImagePreviewProps) {
   const fileUrl = image.length && URL.createObjectURL(image[0]);
   const currentItemFormValue = getValues().items[props.itemIndex];
   const editValue = getValues().editCollection?.items.find(item => item.id === currentItemFormValue.id);
-  const editItemFullImageUrl = editValue && `${apiUrl}/${editValue.image}`;
+  const editItemFullImageUrl = editValue && getImageUrl(editValue.image);
   const imageUrl = fileUrl || editItemFullImageUrl;
   const previewFormStyles: CSSProperties = { borderRadius: '10px', width, height };
   let input: HTMLInputElement | null = null;

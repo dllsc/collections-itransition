@@ -9,6 +9,10 @@ export const post = <TBody, TResponse>(
   path: string, body: TBody,
 ): Promise<TResponse> => axiosInstance.post<TResponse>(path, body).then(r => r.data);
 
+export const put = <TBody, TResponse>(
+  path: string, body: TBody,
+): Promise<TResponse> => axiosInstance.put<TResponse>(path, body).then(r => r.data);
+
 export const get = <TResponse>(
   path: string
 ): Promise<TResponse> => axiosInstance.get<TResponse>(path).then(r => r.data);

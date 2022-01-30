@@ -1,8 +1,8 @@
-import React from 'react';
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import React, { useEffect, useState } from 'react';
+import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { MatButton } from '../imports-material';
 import { ErrorMessage } from '@hookform/error-message';
-import { FormControl, Grid, InputLabel, MenuItem, Select, TextareaAutosize, TextField } from '@mui/material';
+import { FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import { post } from '../../axios-instance';
 import './collectionForm.styles.css';
 import { ICollection, ICollectionForm, ICollectionFormDto } from '../ReadCollection/models';
@@ -10,6 +10,7 @@ import { EItemFieldType } from '../../enums/item-field.enum';
 import { createDefaultFieldForm, FieldFormList } from './field-form-list.component';
 import { required } from './item-form.component';
 import { createDefaultItemForm, ItemFormsList } from './item-forms-list';
+import MDEditor from '@uiw/react-md-editor';
 
 function createDefaultCollectionForm(): ICollectionForm {
   return {
@@ -45,30 +46,68 @@ function createDefaultEditCollectionForm(collection: ICollection): ICollectionFo
   };
 }
 
+function collectionFormToFormData(collectionForm: ICollectionForm): FormData {
+  const images = collectionForm.items.map(item => item.image[0] || new File([], 'empty'));
+  const jsonPartOfCollectionForm: ICollectionFormDto = {
+    ...collectionForm,
+    items: collectionForm.items.map(({ name }) => ({ name })),
+  };
+  const collectionFormData = new FormData();
+
+  collectionFormData.append('collection', JSON.stringify(jsonPartOfCollectionForm));
+  images.forEach((imageFile) => collectionFormData.append(`images`, imageFile));
+
+
+  return collectionFormData;
+}
+
+async function saveCollection(collectionForm: ICollectionForm) {
+  const savedCollection = await post<FormData, { id: number }>('collection', collectionFormToFormData(collectionForm));
+
+  console.log(savedCollection);
+}
+
+function ThemeControl() {
+  const { getValues, register } = useFormContext<ICollectionForm>();
+
+  return <FormControl fullWidth>
+    <InputLabel id="select-label">Theme</InputLabel>
+    <Select
+      defaultValue={getValues().theme}
+      labelId="select-label"
+      label="Theme"
+      {...register('theme', { required: true })}>
+      <MenuItem value="Alcohol">Alcohol</MenuItem>
+      <MenuItem value="Book">Book</MenuItem>
+    </Select>
+  </FormControl>;
+}
+
+function DescriptionEditor() {
+  const { setValue, getValues } = useFormContext<ICollectionForm>();
+  const [markdown, setMarkdown] = useState<string>(getValues().editCollection?.description || '');
+
+  useEffect(() => {
+    setValue('description', markdown);
+  }, [markdown]);
+
+  return <Grid item
+               container>
+    <MDEditor value={markdown}
+              onChange={value => value && setMarkdown(value)}/>
+  </Grid>;
+}
+
 export function CollectionForm(props: ICollectionFormProps) {
-  const formControl = useForm<ICollectionForm>({
+  const formHook = useForm<ICollectionForm>({
     defaultValues: props.initialEditValue
       ? createDefaultEditCollectionForm(props.initialEditValue)
       : createDefaultCollectionForm(),
   });
-  const { register, handleSubmit, formState: { errors }, getValues } = formControl;
+  const { register, handleSubmit, formState: { errors }, getValues } = formHook;
 
-  const onSubmit: SubmitHandler<ICollectionForm> = (collectionForm: ICollectionForm) => {
-    const images = getValues().items.map(item => item.image[0]);
-    const jsonPartOfCollectionForm: ICollectionFormDto = {
-      ...collectionForm,
-      items: collectionForm.items.map(({ name }) => ({ name })),
-    };
-    const collectionFormData = new FormData();
-
-    collectionFormData.append('collection', JSON.stringify(jsonPartOfCollectionForm));
-    images.forEach((imageFile, index) => collectionFormData.append(`images`, imageFile));
-
-    post<FormData, any>('collection', collectionFormData).then(console.log);
-  };
-
-  return <FormProvider {...formControl}>
-    <form onSubmit={handleSubmit(onSubmit)}
+  return <FormProvider {...formHook}>
+    <form onSubmit={handleSubmit(saveCollection)}
           className="form">
       <h1>Create Collection</h1>
 
@@ -89,31 +128,11 @@ export function CollectionForm(props: ICollectionFormProps) {
                 xs={1}/>
           <Grid item
                 flexGrow={1}>
-            <FormControl fullWidth>
-              <InputLabel id="select-label">Theme</InputLabel>
-              <Select
-                defaultValue={getValues().theme}
-                labelId="select-label"
-                label="Theme"
-                {...register('theme', { required: true })}
-              >
-                <MenuItem value="Alcohol">Alcohol</MenuItem>
-                <MenuItem value="Book">Book</MenuItem>
-              </Select>
-            </FormControl>
+            <ThemeControl/>
           </Grid>
         </Grid>
 
-        <Grid item
-              container>
-          <TextareaAutosize
-            className="collection-description__textarea"
-            {...register('description', required)}
-            style={{ flexGrow: 1 }}
-            minRows={8}/>
-        </Grid>
-
-
+        <DescriptionEditor/>
         <FieldFormList/>
 
       </div>

@@ -15,11 +15,9 @@ interface ICardCollection {
 
 
 function CollectionCard(props: ICardCollection) {
-  const href = `/collection/${props.id}`;
+  const href = `/collection/read/${props.id}`;
 
-  function goToCollection() {
-    appHistory.push(href);
-  }
+  const goToCollection = () => appHistory.push(href);
 
   return <Badge badgeContent={props.theme}
                 color="secondary">
@@ -49,7 +47,7 @@ function CollectionCard(props: ICardCollection) {
 
 }
 
-export function CollectionsPage() {
+export function CollectionsListComponent() {
   const params = useParams<{ page: string, limit: string }>();
   const [isLoading, setLoading] = useState(true);
   const [collections, setCollections] = useState<ICollection[]>([]);

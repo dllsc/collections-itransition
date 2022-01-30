@@ -4,7 +4,7 @@ export interface IItemFormDto {
 
 export interface IItemEntityDto extends IItemFormDto {
   readonly image: string;
-  readonly collectionID: number;
+  readonly collectionId: number;
 }
 
 export interface IItemDto extends IItemEntityDto {

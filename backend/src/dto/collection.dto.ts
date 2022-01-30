@@ -19,6 +19,7 @@ export interface ICollectionFormDto {
   theme: string;
   items: IItemFormDto[];
   itemsFields: IItemFieldFormDto[];
+  editCollection?: ICollectionDto;
 }
 
 export interface ICollectionEntityDto {

@@ -45,6 +45,79 @@ export default class CollectionsController {
     }
   }
 
+  private async createCollectionEntity(
+    collectionForm: ICollectionFormDto,
+  ): Promise<CollectionsEntity> {
+    const collectionDto: ICollectionEntityDto = {
+      userId: this.loggedUserService.userId,
+      name: collectionForm.name,
+      theme: collectionForm.theme,
+      description: collectionForm.description,
+    };
+    const collectionsEntity = CollectionsEntity.fromDto(collectionDto);
+
+    return collectionsEntity.save();
+  }
+
+  private async updateCollectionEntity(collectionForm: ICollectionFormDto): Promise<CollectionsEntity> {
+    await createQueryBuilder()
+      .update(CollectionsEntity, {
+        name: collectionForm.name,
+        theme: collectionForm.theme,
+        description: collectionForm.description,
+      })
+      .where('id = :id', { id: collectionForm.id })
+      .execute();
+
+    return CollectionsEntity.findOne({ where: { id: collectionForm.id } });
+  }
+
+  private async deleteRelatedItemsAndFields(collectionId: number) {
+    await createQueryBuilder()
+      .delete()
+      .from(ItemsEntity)
+      .where('collectionId = :id', { id: collectionId });
+
+    await createQueryBuilder()
+      .delete()
+      .from(FieldsEntity)
+      .where('collectionId = :id', { id: collectionId });
+  }
+
+  private async saveItems(
+    collectionId: number,
+    collectionForm: ICollectionFormDto,
+    files: Express.Multer.File[],
+  ) {
+    const filenames = files.map((file, index) => file.size
+      ? this.uploadFile(this.loggedUserService.userId, file)
+      : collectionForm.editCollection.items[index].image,
+    );
+    const itemsDto: IItemEntityDto[] = collectionForm.items.map(({ name }, index) => ({
+      name,
+      image: filenames[index],
+      collectionId: collectionId,
+    }));
+    const itemEntities = itemsDto.map(ItemsEntity.fromDto);
+
+    await ItemsEntity.save(itemEntities);
+  }
+
+  private async saveFields(
+    collectionId: number,
+    collectionForm: ICollectionFormDto,
+  ) {
+    const fieldsDto: IFieldEntityDto[] = collectionForm.itemsFields.map(({ name, type, values }) => ({
+      name,
+      type,
+      values,
+      collectionId,
+    }));
+    const fieldEntities = fieldsDto.map(FieldsEntity.fromDto);
+
+    await FieldsEntity.save(fieldEntities);
+  }
+
   @UseGuards(JwtAuthGuard)
   @Post()
   @UseInterceptors(FilesInterceptor('images'))
@@ -54,36 +127,18 @@ export default class CollectionsController {
   ) {
     this.ensureDirectoryExists();
 
-    const { userId } = this.loggedUserService;
     const collectionForm: ICollectionFormDto = JSON.parse(collectionFormDataJsonDto.collection);
-    const filenames = files.map((file, index) => this.uploadFile(userId, file));
 
-    return {  };
+    const savedCollectionEntity = collectionForm.editCollection
+      ? await this.updateCollectionEntity(collectionForm)
+      : await this.createCollectionEntity(collectionForm);
 
-    const collectionDto: ICollectionEntityDto = {
-      userId,
-      name: collectionForm.name,
-      theme: collectionForm.theme,
-      description: collectionForm.description,
-    };
-    const collectionsEntity = CollectionsEntity.fromDto(collectionDto);
-    const savedCollectionEntity = await collectionsEntity.save();
-    const itemsDto: IItemEntityDto[] = collectionForm.items.map(({ name }, index) => ({
-      name,
-      image: filenames[index],
-      collectionID: savedCollectionEntity.id,
-    }));
-    const itemEntities = itemsDto.map(ItemsEntity.fromDto);
-    const fieldsDto: IFieldEntityDto[] = collectionForm.itemsFields.map(({ name, type, values }) => ({
-      name,
-      type,
-      values,
-      collectionId: savedCollectionEntity.id,
-    }));
-    const fieldEntities = fieldsDto.map(FieldsEntity.fromDto);
+    if (collectionForm.editCollection) {
+      await this.deleteRelatedItemsAndFields(collectionForm.id);
+    }
 
-    await ItemsEntity.save(itemEntities);
-    await FieldsEntity.save(fieldEntities);
+    await this.saveItems(savedCollectionEntity.id, collectionForm, files);
+    await this.saveFields(savedCollectionEntity.id, collectionForm);
 
     return { id: savedCollectionEntity.id };
   }
