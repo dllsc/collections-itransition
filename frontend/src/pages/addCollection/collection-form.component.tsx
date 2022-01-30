@@ -12,6 +12,7 @@ import { required } from './item-form.component';
 import { createDefaultItemForm, ItemFormsList } from './item-forms-list';
 import MDEditor from '@uiw/react-md-editor';
 import Button from '@mui/material/Button';
+import { appHistory } from '../../utils/history.utils';
 
 function createDefaultCollectionForm(): ICollectionForm {
   return {
@@ -66,7 +67,7 @@ function collectionFormToFormData(collectionForm: ICollectionForm): FormData {
 async function saveCollection(collectionForm: ICollectionForm) {
   const savedCollection = await post<FormData, { id: number }>('collection', collectionFormToFormData(collectionForm));
 
-  console.log(savedCollection);
+  appHistory.push(`/collection/read/${savedCollection.id}`);
 }
 
 function ThemeControl() {
