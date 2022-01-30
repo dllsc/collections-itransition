@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { MatButton } from '../imports-material';
 import { ErrorMessage } from '@hookform/error-message';
-import { FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { post } from '../../axios-instance';
 import './collectionForm.styles.css';
 import { ICollection, ICollectionForm, ICollectionFormDto } from '../ReadCollection/models';
@@ -13,6 +13,7 @@ import { createDefaultItemForm, ItemFormsList } from './item-forms-list';
 import MDEditor from '@uiw/react-md-editor';
 import Button from '@mui/material/Button';
 import { appHistory } from '../../utils/history.utils';
+import { ArrowBack } from '@mui/icons-material';
 
 function createDefaultCollectionForm(): ICollectionForm {
   return {
@@ -113,7 +114,26 @@ export function CollectionForm(props: ICollectionFormProps) {
     <form onSubmit={handleSubmit(saveCollection)}
           className="form">
       <div className="form-container">
-        <h1>Create Collection</h1>
+        <Grid container style={{textAlign: 'center'}}>
+          <Grid item xs={3}>
+            <Button variant="outlined"
+                    size="large"
+                    style={{marginTop:15}}
+                    color="secondary"
+                    onClick={() => appHistory.goBack()}>
+              <ArrowBack/> Go Back
+            </Button>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography display={'inline'}
+                        variant="h3"
+                        color={'lightyellow'}
+                        style={{ textShadow: '2px 2px 4px black'}}>
+              Create collection
+            </Typography>
+          </Grid>
+        </Grid>
+
 
         {/*<pre>*/}
         {/*  {JSON.stringify(getValues(), null, 2)}*/}
