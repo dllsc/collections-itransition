@@ -114,40 +114,35 @@ export function CollectionForm(props: ICollectionFormProps) {
     <form onSubmit={handleSubmit(saveCollection)}
           className="form">
       <div className="form-container">
-        <Grid container style={{textAlign: 'center'}}>
-          <Grid item xs={3}>
-            <Button variant="outlined"
-                    size="large"
-                    style={{marginTop:15}}
-                    color="secondary"
-                    onClick={() => appHistory.goBack()}>
-              <ArrowBack/> Go Back
-            </Button>
-          </Grid>
-          <Grid item xs={6}>
-            <Typography display={'inline'}
-                        variant="h3"
-                        color={'lightyellow'}
-                        style={{ textShadow: '2px 2px 4px black'}}>
-              Create collection
-            </Typography>
-          </Grid>
-        </Grid>
-
-
         {/*<pre>*/}
         {/*  {JSON.stringify(getValues(), null, 2)}*/}
         {/*</pre>*/}
 
         <div className="collection-description">
+          <Button variant="outlined"
+                  size="large"
+                  style={{marginTop:15}}
+                  color="secondary"
+                  onClick={() => appHistory.goBack()}>
+            <ArrowBack/> Go Back
+          </Button>
+          <div style={{borderBottom: '1px solid gray', textAlign: 'center', marginBottom: 15}}>
+            <Typography display={'inline'}
+                        variant="h3"
+                        color={'lightblue'}
+                        style={{ textShadow: '1px 1px 2px blue'}}>
+              Create collection
+            </Typography>
+          </div>
           <Grid container>
             <Grid item
                   flexGrow={1}>
               <TextField {...register('name', required)} fullWidth
-                         label="name collection"/>
-              <ErrorMessage errors={errors}
-                            name="name"
-                            as="p"/></Grid>
+                         label="name collection"
+              error={!!errors.name}
+              helperText={<ErrorMessage errors={errors} name="name"/>}
+              />
+              </Grid>
             <Grid item
                   xs={1}/>
             <Grid item
