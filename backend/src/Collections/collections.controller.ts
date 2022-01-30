@@ -76,12 +76,14 @@ export default class CollectionsController {
     await createQueryBuilder()
       .delete()
       .from(ItemsEntity)
-      .where('collectionId = :id', { id: collectionId });
+      .where('collectionId = :id', { id: collectionId })
+      .execute();
 
     await createQueryBuilder()
       .delete()
       .from(FieldsEntity)
-      .where('collectionId = :id', { id: collectionId });
+      .where('collectionId = :id', { id: collectionId })
+      .execute();
   }
 
   private async saveItems(
