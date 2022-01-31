@@ -23,7 +23,9 @@ import FieldsEntity from '../../db/fields.entity';
 import { createQueryBuilder } from 'typeorm';
 import LikeEntity from '../../db/like.entity';
 
-const IMG_DIR = './images';
+const IMG_DIR = process.env.NODE_ENV?.trim() === 'production'
+  ? './dist/static/images'
+  : './dev-static/images';
 
 @Controller('api/collection')
 export default class CollectionsController {
@@ -176,7 +178,7 @@ export default class CollectionsController {
   async getCollectionsByUser(
     @Param('userId', ParseIntPipe) userId: number,
     @Param('page', ParseIntPipe) page: number,
-    @Param('limit', ParseIntPipe) limit: number
+    @Param('limit', ParseIntPipe) limit: number,
   ) {
     return createQueryBuilder(CollectionsEntity, 'c')
       .where('userId = :userId', { userId })

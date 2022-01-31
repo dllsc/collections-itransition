@@ -24,6 +24,8 @@ export class GlobalModule {
 
 }
 
+console.log(__dirname);
+
 @Module({
   controllers: [
     CollectionsController,
@@ -42,7 +44,7 @@ export class GlobalModule {
       [UserEntity, CollectionsEntity, ItemsEntity, LikeEntity],
     ),
     ServeStaticModule.forRoot({
-      rootPath: process.env.NODE_ENV.trim() === 'production'
+      rootPath: process.env.NODE_ENV?.trim() === 'production'
         ? `${__dirname}/../static/`
         : `${__dirname}/../../dev-static`,
     }),
