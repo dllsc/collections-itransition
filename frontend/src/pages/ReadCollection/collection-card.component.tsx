@@ -118,7 +118,5 @@ export function CollectionCard(props: ICardCollection) {
           </Grid>
         </Grid>
 
-
-
     </div>);
 }
