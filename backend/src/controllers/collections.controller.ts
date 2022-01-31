@@ -172,6 +172,23 @@ export default class CollectionsController {
       .getMany();
   }
 
+  @Get('user/:userId')
+  async getCollectionsByUser(
+    @Param('userId', ParseIntPipe) userId: number,
+  ) {
+    return createQueryBuilder(CollectionsEntity, 'c')
+      .where('userId = :userId', { userId })
+      .innerJoinAndSelect('c.items', 'items')
+      .innerJoinAndSelect('c.fields', 'fields')
+      .getMany();
+  }
+
+  @Get('my')
+  @UseGuards(JwtAuthGuard)
+  async getMyCollections() {
+    return this.getCollectionsByUser(this.loggedUserService.userId);
+  }
+
   @Get('liked')
   @UseGuards(JwtAuthGuard)
   async getLikedCollections(
