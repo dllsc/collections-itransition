@@ -1,10 +1,9 @@
-
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { createDefaultValueForType } from './field-form.component';
-import { MatButton } from '../imports-material';
 import { ItemForm } from './item-form.component';
 import React from 'react';
 import { IAddItemFormModel, ICollectionForm } from '../ReadCollection/models';
+import { Button } from '@mui/material';
 
 export function createDefaultItemForm(): IAddItemFormModel {
   return {
@@ -39,6 +38,6 @@ export function ItemFormsList() {
                                               index={index}
                                               remove={() => removeItem(index)}
                                               single={itemForms.length === 1}/>)}
-    <MatButton onClick={addInput}> + ITEM </MatButton>
+    <Button onClick={addInput}> + ITEM </Button>
   </>;
 }

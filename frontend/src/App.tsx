@@ -7,12 +7,12 @@ import { CollectionView } from './pages/ReadCollection/collection-view.component
 import { CollectionsListComponent } from './pages/ReadCollection/collections-list.component';
 import { appHistory } from './utils/history.utils';
 import { GuardedRouteComponent } from './components/GuardedRoute/guarded-route.component';
-import { CollectionForm } from './pages/addCollection/collection-form.component';
-import { EditCollectionForm } from './pages/addCollection/edit-collection-form.component';
+import { CollectionForm } from './pages/CreateCollection/collection-form.component';
+import { EditCollectionForm } from './pages/CreateCollection/edit-collection-form.component';
 
 export function App() {
   return <Router history={appHistory}>
-    <GuardedRouteComponent path="/collection/add"
+    <GuardedRouteComponent path="/collection/create"
                            component={CollectionForm}/>
     <GuardedRouteComponent path="/collection/edit/:id"
                            component={EditCollectionForm}/>

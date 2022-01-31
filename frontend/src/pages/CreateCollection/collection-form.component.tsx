@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
-import { MatButton } from '../imports-material';
 import { ErrorMessage } from '@hookform/error-message';
 import { FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { post } from '../../axios-instance';
-import './collectionForm.styles.css';
+import './collection-form.styles.css';
 import { ICollection, ICollectionForm, ICollectionFormDto } from '../ReadCollection/models';
 import { EItemFieldType } from '../../enums/item-field.enum';
 import { createDefaultFieldForm, FieldFormList } from './field-form-list.component';
@@ -108,7 +107,7 @@ export function CollectionForm(props: ICollectionFormProps) {
       ? createDefaultEditCollectionForm(props.initialEditValue)
       : createDefaultCollectionForm(),
   });
-  const { register, handleSubmit, formState: { errors }, getValues } = formHook;
+  const { register, handleSubmit, formState: { errors } } = formHook;
 
   return <FormProvider {...formHook}>
     <form onSubmit={handleSubmit(saveCollection)}
@@ -121,16 +120,16 @@ export function CollectionForm(props: ICollectionFormProps) {
         <div className="collection-description">
           <Button variant="outlined"
                   size="large"
-                  style={{marginTop:15}}
+                  style={{ marginTop: 15 }}
                   color="secondary"
                   onClick={() => appHistory.goBack()}>
             <ArrowBack/> Go Back
           </Button>
-          <div style={{borderBottom: '1px solid gray', textAlign: 'center', marginBottom: 15}}>
+          <div style={{ borderBottom: '1px solid gray', textAlign: 'center', marginBottom: 15 }}>
             <Typography display={'inline'}
                         variant="h3"
                         color={'lightblue'}
-                        style={{ textShadow: '1px 1px 2px blue'}}>
+                        style={{ textShadow: '1px 1px 2px blue' }}>
               Create collection
             </Typography>
           </div>
@@ -139,10 +138,11 @@ export function CollectionForm(props: ICollectionFormProps) {
                   flexGrow={1}>
               <TextField {...register('name', required)} fullWidth
                          label="name collection"
-              error={!!errors.name}
-              helperText={<ErrorMessage errors={errors} name="name"/>}
+                         error={!!errors.name}
+                         helperText={<ErrorMessage errors={errors}
+                                                   name="name"/>}
               />
-              </Grid>
+            </Grid>
             <Grid item
                   xs={1}/>
             <Grid item

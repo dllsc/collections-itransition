@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { MatButton } from '../imports-material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { axiosInstance } from '../../axios-instance';
 import { ErrorMessage } from '@hookform/error-message';
 import { appHistory } from '../../utils/history.utils';
 import { saveCredentialItems } from '../../utils/login.utils';
-import { TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import './login.component.css';
+import { REQUIRE_MESSAGE } from '../../constants/constants';
 
 type RegistrationForm = {
   email: string,
@@ -49,11 +49,10 @@ export default function Login() {
           {icon}
         </span>;
 
-  const REQUIRE_MESSAGE = 'This is required';
-
 
   return <div className="login">
-    <form onSubmit={handleSubmit(onSubmit, () => {})}
+    <form onSubmit={handleSubmit(onSubmit, () => {
+    })}
           className="login__form">
       <h1 className="login__button">Login</h1>
 
@@ -82,9 +81,9 @@ export default function Login() {
                  }
       />
 
-      <MatButton className="login__button"
-                 variant={'outlined'}
-                 type="submit">Login</MatButton>
+      <Button className="login__button"
+              variant={'outlined'}
+              type="submit">Login</Button>
 
     </form>
   </div>;

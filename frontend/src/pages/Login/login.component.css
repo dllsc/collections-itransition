@@ -8,17 +8,20 @@
     overflow: hidden;
     background-color: white;
 }
-.login__header{
+
+.login__header {
     margin: 32px 0;
     font-family: "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system;
     font-weight: normal;
     text-align: center;
 }
-.login__button{
+
+.login__button {
     display: block !important;
     margin: 32px auto;
 }
-.login{
+
+.login {
     display: flex;
     align-items: center;
     justify-content: center;

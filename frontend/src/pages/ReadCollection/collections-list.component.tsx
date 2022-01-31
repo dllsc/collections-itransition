@@ -8,7 +8,7 @@ import { imageToBackground } from '../../utils/styles.utils';
 import Button from '@mui/material/Button';
 import {
   ArrowBackIos,
-  ArrowForwardIos, CreateNewFolder, CreateSharp,
+  ArrowForwardIos, CreateNewFolder, CreateSharp, DeleteForeverOutlined,
   Edit,
   FavoriteBorder,
 } from '@mui/icons-material';
@@ -21,11 +21,52 @@ interface ICardCollection {
   readonly id: number;
 }
 
+interface ToolsProps {
+  readonly id: number;
+}
 
-function CollectionCard(props: ICardCollection) {
+function ToolsRead(props: ToolsProps) {
   const href = `/collection/read/${props.id}`;
 
   const goToCollection = () => appHistory.push(href);
+
+  return <div>
+    <Button
+      style={{ marginRight: 5 }}
+      onClick={goToCollection}
+      variant="outlined"
+      size="large"
+      color="primary">
+      Read
+    </Button>
+    <Button
+      variant="outlined"
+      size="large"
+      color="error">
+      <FavoriteBorder/> Like
+    </Button>
+  </div>;
+}
+
+function ToolsAuth(props: ToolsProps) {
+
+  return <div>
+    <Button variant="outlined"
+            size="large"
+            color="error"
+            style={{ marginRight: 5 }}>
+      <DeleteForeverOutlined/> Delete
+    </Button>
+    <Button variant="outlined"
+            size="large"
+            color="primary"
+            onClick={() => appHistory.push(`/collection/edit/${props.id}`)}>
+      <Edit/> Edit
+    </Button>
+  </div>;
+}
+
+function CollectionCard(props: ICardCollection) {
 
   return (
 
@@ -41,12 +82,7 @@ function CollectionCard(props: ICardCollection) {
       <Grid container>
         <Grid item
               xs={2}>
-          <Button variant="outlined"
-                  size="large"
-                  color="primary"
-                  onClick={() => appHistory.push(`/collection/edit/${props.id}`)}>
-            <Edit/> Edit
-          </Button>
+          <ToolsAuth id={props.id}/>
         </Grid>
         <Grid item
               xs={8}>
@@ -64,20 +100,7 @@ function CollectionCard(props: ICardCollection) {
         </Grid>
         <Grid item
               xs={2}>
-          <Button
-            style={{ marginRight: 5 }}
-            onClick={goToCollection}
-            variant="outlined"
-            size="large"
-            color="primary">
-            Read
-          </Button>
-          <Button
-            variant="outlined"
-            size="large"
-            color="error">
-            <FavoriteBorder/> Like
-          </Button>
+          <ToolsRead id={props.id}/>
         </Grid>
       </Grid>
 
@@ -89,6 +112,30 @@ export function CollectionsListComponent() {
   const params = useParams<{ page: string, limit: string }>();
   const [isLoading, setLoading] = useState(true);
   const [collections, setCollections] = useState<ICollection[]>([]);
+
+
+  const goNext = () => {
+    setLoading(true)
+    const href = `/collection/all/${parseInt(params.page) + 1}/${params.limit}`;
+    appHistory.push(href);
+      get<ICollection[]>(`collection/page/${parseInt(params.page) + 1}/${params.limit}`).then(data => {
+       setCollections(data);
+        setLoading(false);
+      });
+
+  };
+  const goBack = () => {
+    if (parseInt(params.page) > 0)
+    {
+      setLoading(true)
+      const href = `/collection/all/${parseInt(params.page) - 1}/${params.limit}`;
+      appHistory.push(href);
+      get<ICollection[]>(`collection/page/${parseInt(params.page) - 1}/${params.limit}`).then(data => {
+        setCollections(data);
+        setLoading(false);
+      });
+    }
+  };
 
   useEffect(() => {
     get<ICollection[]>(`collection/page/${params.page}/${params.limit}`).then(data => {
@@ -102,25 +149,22 @@ export function CollectionsListComponent() {
   }
 
   return <>
-
-
     <Grid container
-          spacing={0}
-          alignItems="center"
-          style={{
-
-          }}>
+          alignItems="center">
       <Grid item
             xs={1}
             style={{ textAlign: 'center' }}>
-        <IconButton size={'large'}><ArrowBackIos/></IconButton>
+        <IconButton size={'large'}
+                    onClick={goBack}>
+          <ArrowBackIos/>
+        </IconButton>
       </Grid>
       <Grid item
             xs={10}
-      style={{height: '100vh', overflowY: 'auto'}}>
+            style={{ height: '100vh', overflowY: 'auto' }}>
         <div style={{ textAlign: 'right', paddingBottom: 15, paddingTop: 25 }}>
           <IconButton color={'default'}
-                      onClick={() => appHistory.push(`/collection/add`)}>
+                      onClick={() => appHistory.push(`/collection/create`)}>
             <CreateSharp/> Create New
           </IconButton>
         </div>
@@ -133,7 +177,7 @@ export function CollectionsListComponent() {
             xs={1}
             style={{ textAlign: 'center' }}>
         <IconButton size={'large'}
-                    onClick={() => console.log('hahaha')}>
+                    onClick={goNext}>
           <ArrowForwardIos/>
         </IconButton>
       </Grid>
