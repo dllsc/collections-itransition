@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import React, { InputHTMLAttributes, useEffect, useState } from 'react';
 import { get } from '../../axios-instance';
 import {
-  FormControl,
+  FormControl, FormControlLabel,
   Grid,
   IconButton, InputLabel, InputProps, MenuItem,
   Select, SelectChangeEvent, Switch, SwitchProps, SwitchState,
@@ -116,11 +116,14 @@ export function CollectionsListComponent() {
             xs={10}
             style={{ height: '100vh', overflowY: 'auto' }}>
         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'end' }}>
-          <Switch
+          <FormControlLabel control={<Switch
+            aria-label={'123'}
+            color={'error'}
             checked={checked}
             onChange={switchEvent}
             inputProps={{ 'aria-label': 'controlled' }}
-          />
+          />} label="Favorite" />
+
           <FormControl style={{ width: 100, marginRight: 20, marginTop: 20 }}>
             <InputLabel id="select-label">Show</InputLabel>
             <Select
