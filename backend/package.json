@@ -10,8 +10,8 @@
     "build": "npx @nestjs/cli build && npm run copy-front && npm run copy-images",
     "start-server": "nest start --watch --debug",
     "start": "node dist/src/main",
-    "copy-front": "cpx ../frontend/build/** ./dist/static/",
-    "copy-images": "cpx ./dev-static/** ./dist/static/"
+    "copy-front": "copyfiles ../frontend/build/** ./dist/static/",
+    "copy-images": "copyfiles ./dev-static/** ./dist/static/"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
@@ -57,7 +57,8 @@
     "ts-loader": "^9.2.3",
     "ts-node": "^10.0.0",
     "tsconfig-paths": "^3.10.1",
-    "typescript": "^4.3.5"
+    "typescript": "^4.3.5",
+    "copyfiles": "^2.4.1"
   },
   "devDependencies": {
 
