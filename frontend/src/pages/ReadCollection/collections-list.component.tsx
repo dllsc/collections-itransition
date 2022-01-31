@@ -2,9 +2,9 @@ import { useParams } from 'react-router-dom';
 import React, { InputHTMLAttributes, useEffect, useState } from 'react';
 import { get } from '../../axios-instance';
 import {
-  FormControl, FormControlLabel,
+  FormControl, FormControlLabel, FormLabel,
   Grid,
-  IconButton, InputLabel, InputProps, MenuItem,
+  IconButton, InputLabel, InputProps, MenuItem, Radio, RadioGroup,
   Select, SelectChangeEvent, Switch, SwitchProps, SwitchState,
 } from '@mui/material';
 import { appHistory } from '../../utils/history.utils';
@@ -16,6 +16,7 @@ import {
 } from '@mui/icons-material';
 import { CollectionCard } from './collection-card.component';
 import { CollectionToolbar } from './collection-toolbar.component';
+import { EItemFieldType } from '../../enums/item-field.enum';
 
 
 export function CollectionsListComponent() {
@@ -23,37 +24,24 @@ export function CollectionsListComponent() {
   const [isLoading, setLoading] = useState(true);
   const [collections, setCollections] = useState<ICollection[]>([]);
   const [limit, setLimit] = useState(params.limit);
-  const [checked, setChecked] = useState(false);
   const [url, setUrl] = useState('page');
 
   const switchEvent = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const href = `/collection/all/0/${params.limit}`;
-      appHistory.push(href);
-    if (!event.target.checked) {
-      get<ICollection[]>(`collection/page/${params.page}/${params.limit}`).then(data => {
-        setCollections(data);
-        setLoading(false);
-        setUrl('page');
-        console.log(url);
-      });
-    } else {
-      setLoading(true);
-      get<ICollection[]>(`collection/liked/${params.page}/${params.limit}`).then(data => {
-          setCollections(data);
-          setLoading(false);
-          setUrl('liked');
-          console.log(url);
-        }
-      );
-    }
 
-    setChecked(event.target.checked);
+
+    const href = `/collection/all/0/${params.limit}`;
+    appHistory.push(href);
+    get<ICollection[]>(`collection/${event.target.value}/${params.page}/${params.limit}`).then(data => {
+      setCollections(data);
+      setLoading(false);
+      setUrl(event.target.value);
+    });
   };
 
   const handleChange = (event: SelectChangeEvent) => {
     setLimit(event.target.value);
-     const href = `/collection/all/0/${event.target.value}`;
-     appHistory.push(href);
+    const href = `/collection/all/0/${event.target.value}`;
+    appHistory.push(href);
     get<ICollection[]>(`collection/${url}/0/${event.target.value}`).then(data => {
       setCollections(data);
     });
@@ -62,7 +50,7 @@ export function CollectionsListComponent() {
 
   const goNext = () => {
 
-    if (!(collections.length < parseInt(params.limit) || parseInt(params.limit)==0)) {
+    if (!(collections.length < parseInt(params.limit) || parseInt(params.limit) == 0)) {
       const href = `/collection/all/${parseInt(params.page) + 1}/${params.limit}`;
 
       get<ICollection[]>(`collection/${url}/${parseInt(params.page) + 1}/${params.limit}`).then(data => {
@@ -116,13 +104,28 @@ export function CollectionsListComponent() {
             xs={10}
             style={{ height: '100vh', overflowY: 'auto' }}>
         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'end' }}>
-          <FormControlLabel control={<Switch
-            aria-label={'123'}
-            color={'error'}
-            checked={checked}
-            onChange={switchEvent}
-            inputProps={{ 'aria-label': 'controlled' }}
-          />} label="Favorite" />
+
+          <FormControl style={{marginTop:5}}>
+            <FormLabel id="radio-buttons-group-label">Mode</FormLabel>
+            <RadioGroup
+              aria-labelledby="radio-buttons-group-label"
+              defaultValue="page"
+              name="radio-buttons-group"
+              onChange={switchEvent}
+              row
+
+            >
+              <FormControlLabel value="page"
+                                control={<Radio/>}
+                                label="ALL"/>
+              <FormControlLabel value="liked"
+                                control={<Radio/>}
+                                label="FAVORITE"/>
+              <FormControlLabel value="my"
+                                control={<Radio/>}
+                                label="MY"/>
+            </RadioGroup>
+          </FormControl>
 
           <FormControl style={{ width: 100, marginRight: 20, marginTop: 20 }}>
             <InputLabel id="select-label">Show</InputLabel>

@@ -175,18 +175,24 @@ export default class CollectionsController {
   @Get('user/:userId')
   async getCollectionsByUser(
     @Param('userId', ParseIntPipe) userId: number,
+    @Param('page', ParseIntPipe) page: number,
+    @Param('limit', ParseIntPipe) limit: number
   ) {
     return createQueryBuilder(CollectionsEntity, 'c')
       .where('userId = :userId', { userId })
+      .skip(page * limit)
+      .take(limit)
       .innerJoinAndSelect('c.items', 'items')
       .innerJoinAndSelect('c.fields', 'fields')
       .getMany();
   }
 
-  @Get('my')
+  @Get('my/:page/:limit')
   @UseGuards(JwtAuthGuard)
-  async getMyCollections() {
-    return this.getCollectionsByUser(this.loggedUserService.userId);
+  async getMyCollections(@Param('page', ParseIntPipe) page: number,
+                         @Param('limit', ParseIntPipe) limit: number) {
+
+    return this.getCollectionsByUser(this.loggedUserService.userId, page, limit);
   }
 
   @Get('liked/:page/:limit')
