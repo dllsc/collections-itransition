@@ -26,11 +26,9 @@ const marginBottom = 15;
 export default function Login() {
   const { register, handleSubmit, formState: { errors }, setError } = useForm<RegistrationForm>();
   const onSubmit: SubmitHandler<RegistrationForm> = data => {
-    console.log(data);
     axiosInstance
       .post<IToken>('auth/login', data)
       .then(result => saveLoginDataAndGoToCollections(result.data.accessToken, result.data.userId)).catch(error => {
-      console.log(error);
       if (error.response) {
         setError('email', { type: error, message: error.response.data.message });
       }
