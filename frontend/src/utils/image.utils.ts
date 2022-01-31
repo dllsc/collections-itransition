@@ -1,5 +1,5 @@
 import { apiUrl } from '../environment-variables';
 
 export function getImageUrl(image: string): string {
-  return `${apiUrl}/${image}`;
+  return `${apiUrl}/images/${image}`;
 }

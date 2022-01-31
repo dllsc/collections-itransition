@@ -23,9 +23,9 @@ import FieldsEntity from '../../db/fields.entity';
 import { createQueryBuilder } from 'typeorm';
 import LikeEntity from '../../db/like.entity';
 
-const IMG_DIR = './dist/images';
+const IMG_DIR = './images';
 
-@Controller('collection')
+@Controller('api/collection')
 export default class CollectionsController {
   constructor(
     private readonly loggedUserService: LoggedUserService,

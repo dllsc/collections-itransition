@@ -2,7 +2,9 @@ import axios from 'axios';
 import { removeCredentialItems, TOKEN_LOCAL_STORAGE_KEY } from './utils/login.utils';
 
 export const axiosInstance = axios.create({
-  baseURL: 'http://localhost:3000/',
+  baseURL: process.env.NODE_ENV === 'production'
+    ? `${window.location.origin}/api`
+    : 'http://localhost:3000/api',
 });
 
 export const post = <TBody, TResponse>(
@@ -14,7 +16,7 @@ export const put = <TBody, TResponse>(
 ): Promise<TResponse> => axiosInstance.put<TResponse>(path, body).then(r => r.data);
 
 export const get = <TResponse>(
-  path: string
+  path: string,
 ): Promise<TResponse> => axiosInstance.get<TResponse>(path).then(r => r.data);
 
 

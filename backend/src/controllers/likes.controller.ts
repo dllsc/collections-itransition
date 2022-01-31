@@ -6,7 +6,7 @@ import { LoggedUserService } from '../logged-user.service';
 import UserEntity from '../../db/user.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 
-@Controller('like')
+@Controller('api/like')
 export class LikesController {
   constructor(
     private readonly loggedUserService: LoggedUserService,

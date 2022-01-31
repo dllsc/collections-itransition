@@ -1,9 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
-// import {ConfigModule} from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
-//
 import UserEntity from '../db/user.entity';
 import { LoggedUserService } from './logged-user.service';
 import CollectionsEntity from '../db/collections.entity';
@@ -33,7 +30,6 @@ export class GlobalModule {
     LikesController,
   ],
   imports: [
-    // ConfigModule.forRoot(),
     AuthModule,
     TypeOrmModule.forRoot({
       type: 'sqlite',
@@ -41,13 +37,14 @@ export class GlobalModule {
       entities: ['dist/**/*.entity{.ts,.js}'],
       autoLoadEntities: true,
       synchronize: true,
-      // logging: ['query'],
     }),
     TypeOrmModule.forFeature(
       [UserEntity, CollectionsEntity, ItemsEntity, LikeEntity],
     ),
     ServeStaticModule.forRoot({
-      rootPath: `${__dirname}/../images`,
+      rootPath: process.env.NODE_ENV.trim() === 'production'
+        ? `${__dirname}/../static/`
+        : `${__dirname}/../../dev-static`,
     }),
     GlobalModule,
   ],
