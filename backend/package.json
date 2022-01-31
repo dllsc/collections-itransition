@@ -10,8 +10,8 @@
     "build": "npx @nestjs/cli build && npm run copy-front && npm run copy-images",
     "start-server": "nest start --watch --debug",
     "start": "node dist/src/main",
-    "copy-front": "copyfiles ../frontend/build/** ./dist/static/",
-    "copy-images": "copyfiles ./dev-static/** ./dist/static/"
+    "copy-front": "copyfiles -u 3 ../frontend/build/**/* dist/static/",
+    "copy-images": "copyfiles -u 1 dev-static/**/* dist/static/"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
