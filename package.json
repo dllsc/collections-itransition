@@ -2,7 +2,8 @@
   "name": "collections-itransition",
   "version": "1.0.0",
   "scripts": {
-    "build": "cd frontend && npm i && npm run build && cd ../backend && npm i && npm run build",
-    "start": "set NODE_ENV=production && cd backend && npm run start"
+    "build": "cd frontend && npm run build && cd ../backend && npm run build",
+    "start": "set NODE_ENV=production && cd backend && npm run start",
+    "postinstall": "cd frontend && npm i && cd ../backend && npm i"
   }
 }
