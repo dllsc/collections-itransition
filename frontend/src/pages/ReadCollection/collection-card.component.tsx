@@ -1,9 +1,10 @@
 import { FormControl, Grid, InputLabel, MenuItem, Paper, Select, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { appHistory } from '../../utils/history.utils';
 import Button from '@mui/material/Button';
-import { DeleteForeverOutlined, Edit, FavoriteBorder, ReadMore } from '@mui/icons-material';
+import { DeleteForeverOutlined, Edit, Favorite, FavoriteBorder, ReadMore } from '@mui/icons-material';
 import { imageToBackground } from '../../utils/styles.utils';
+import { get, post } from '../../axios-instance';
 
 interface ToolsProps {
   readonly id: number;
@@ -21,6 +22,20 @@ function ToolsRead(props: ToolsProps) {
 
   const goToCollection = () => appHistory.push(href);
 
+  const [liked, setLiked] = useState(false);
+  const [likesTotal, setLikesTotal] = useState(0);
+
+  const toggleLike = () => post<object, boolean>(`like/${props.id}`, {}).then(setLiked);
+
+  useEffect(() => {
+    get<boolean>(`like/${props.id}`).then(setLiked);
+  }, []);
+
+  useEffect(() => {
+    get<number>(`like/total/${props.id}`).then(setLikesTotal);
+
+  }, [liked]);
+
   return <div>
     <Button
       onClick={goToCollection}
@@ -35,8 +50,10 @@ function ToolsRead(props: ToolsProps) {
       style={{ width: 90 }}
       variant="outlined"
       size="large"
-      color="error">
-      <FavoriteBorder/> Like
+      color="error"
+      onClick={toggleLike}>
+      <span style={{ marginRight: 10 }}>{likesTotal}</span>
+      {liked ? <Favorite/> : <FavoriteBorder/>}
     </Button>
   </div>;
 }
