@@ -1,9 +1,8 @@
-import { FormControl, Grid, InputLabel, MenuItem, Paper, Select, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { appHistory } from '../../utils/history.utils';
 import Button from '@mui/material/Button';
 import { DeleteForeverOutlined, Edit, Favorite, FavoriteBorder, ReadMore } from '@mui/icons-material';
-import { imageToBackground } from '../../utils/styles.utils';
 import { get, post } from '../../axios-instance';
 
 interface ToolsProps {
