@@ -28,16 +28,6 @@ function CollectionToolbar({ collection }: ICollectionInfoToolbarProps) {
 
   useEffect(() => {
     get<number>(`like/total/${collection.id}`).then(setLikesTotal);
-  //
-  //   // TODO: это чисто для примера.
-  //   //  Проверка того, что можно получить коллекцию залайканых коллекций(каламбур)
-  //   get<ICollection[]>(`collection/liked`).then(console.log);
-  //
-  //   //  TODO: Проверка того, что можно получить свои коллекции
-  //   get<ICollection[]>(`collection/my`).then(console.log);
-  //
-  //   //  TODO: Проверка того, что можно получить коллекции конкретного усера(введи свой айди в конце)
-  //   get<ICollection[]>(`collection/user/20`).then(console.log);
   }, [liked]);
 
   const toggleLike = () => post<object, boolean>(`like/${collection.id}`, {}).then(setLiked);

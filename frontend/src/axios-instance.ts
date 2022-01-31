@@ -43,7 +43,6 @@ axiosInstance.interceptors.response.use(r => r, (response) => {
     console.log(responseJSON.status);
     removeCredentialItems();
     window.location.href = '/login';
-    // TODO: go to login page
   }
 
   return response;

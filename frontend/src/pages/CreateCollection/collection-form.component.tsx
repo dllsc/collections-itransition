@@ -113,10 +113,6 @@ export function CollectionForm(props: ICollectionFormProps) {
     <form onSubmit={handleSubmit(saveCollection)}
           className="form">
       <div className="form-container">
-        {/*<pre>*/}
-        {/*  {JSON.stringify(getValues(), null, 2)}*/}
-        {/*</pre>*/}
-
         <div className="collection-description">
           <Button variant="outlined"
                   size="large"

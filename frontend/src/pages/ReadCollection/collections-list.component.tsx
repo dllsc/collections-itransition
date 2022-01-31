@@ -16,7 +16,6 @@ import {
 } from '@mui/icons-material';
 import { CollectionCard } from './collection-card.component';
 import { CollectionToolbar } from './collection-toolbar.component';
-import { EItemFieldType } from '../../enums/item-field.enum';
 
 
 export function CollectionsListComponent() {

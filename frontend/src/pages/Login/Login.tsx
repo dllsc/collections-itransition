@@ -54,7 +54,7 @@ export default function Login() {
     <form onSubmit={handleSubmit(onSubmit, () => {
     })}
           className="login__form">
-      <h1 className="login__button">Login</h1>
+      <h1 className="login__header">Login</h1>
 
       <TextField {...register('email', {
         pattern: { value: /$^|.+@.+..+/, message: 'invalid' },
