@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "scripts": {
     "build": "cd frontend && npm i && npm run build && cd ../backend && npm i && npm run build",
-    "copy-front": "cd backend && npm run copy-front",
     "start": "set NODE_ENV=production && cd backend && npm run start"
   }
 }

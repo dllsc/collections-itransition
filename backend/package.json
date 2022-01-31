@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "nest build && npm run copy-front && npm run copy-images",
+    "build": "npx @nestjs/cli build && npm run copy-front && npm run copy-images",
     "start-server": "nest start --watch --debug",
     "start": "node dist/src/main",
     "copy-front": "cpx ../frontend/build/** ./dist/static/",
@@ -32,11 +32,12 @@
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
     "sqlite3": "^5.0.2",
-    "typeorm": "^0.2.41"
+    "typeorm": "^0.2.41",
+    "cpx": "^1.5.0",
+    "@nestjs/cli": "^8.0.0"
   },
   "devDependencies": {
     "@types/multer": "^1.4.7",
-    "@nestjs/cli": "^8.0.0",
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",
     "@types/bcrypt": "^5.0.0",
@@ -58,8 +59,7 @@
     "ts-loader": "^9.2.3",
     "ts-node": "^10.0.0",
     "tsconfig-paths": "^3.10.1",
-    "typescript": "^4.3.5",
-    "cpx": "^1.5.0"
+    "typescript": "^4.3.5"
   },
   "jest": {
     "moduleFileExtensions": [
