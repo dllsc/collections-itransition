@@ -189,16 +189,19 @@ export default class CollectionsController {
     return this.getCollectionsByUser(this.loggedUserService.userId);
   }
 
-  @Get('liked')
+  @Get('liked/:page/:limit')
   @UseGuards(JwtAuthGuard)
-  async getLikedCollections(
-  ) {
+  async getLikedCollections(@Param('page', ParseIntPipe) page: number,
+                            @Param('limit', ParseIntPipe) limit: number) {
     const likesWithCollections = await createQueryBuilder(LikeEntity, 'l')
       .where('l.userId = :userId', { userId: this.loggedUserService.userId })
+      .skip(page * limit)
+      .take(limit)
       .innerJoinAndSelect('l.collection', 'collection')
       .leftJoinAndSelect('collection.items', 'items')
       .leftJoinAndSelect('collection.fields', 'fields')
-      .getMany();
+      .getMany()
+    ;
 
     return likesWithCollections.map(like => like.collection);
   }
