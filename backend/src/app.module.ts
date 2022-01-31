@@ -45,7 +45,7 @@ console.log(__dirname);
     ),
     ServeStaticModule.forRoot({
       rootPath: process.env.NODE_ENV?.trim() === 'production'
-        ? `${__dirname}/../static/`
+        ? `${__dirname}/static/`
         : `${__dirname}/../../dev-static`,
     }),
     GlobalModule,

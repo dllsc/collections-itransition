@@ -24,7 +24,7 @@ import { createQueryBuilder } from 'typeorm';
 import LikeEntity from '../../db/like.entity';
 
 const IMG_DIR = process.env.NODE_ENV?.trim() === 'production'
-  ? './dist/static/images'
+  ? './dist/src/static/images'
   : './dev-static/images';
 
 @Controller('api/collection')
