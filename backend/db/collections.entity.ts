@@ -11,6 +11,7 @@ import ItemsEntity from './items.entity';
 import { ICollectionDto, ICollectionEntityDto } from '../src/dto/collection.dto';
 import FieldsEntity from './fields.entity';
 import { createIdModel } from '../src/utils/database.utils';
+import LikeEntity from './like.entity';
 
 @Entity()
 export default class CollectionsEntity extends BaseEntity {
@@ -31,6 +32,9 @@ export default class CollectionsEntity extends BaseEntity {
 
   @OneToMany(() => ItemsEntity, item => item.collection)
   items: ItemsEntity[];
+
+  @OneToMany(() => LikeEntity, like => like.collection)
+  likes: LikeEntity[];
 
   @OneToMany(() => FieldsEntity, field => field.collection)
   fields: FieldsEntity[];

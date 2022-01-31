@@ -1,5 +1,6 @@
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import CollectionsEntity from './collections.entity';
+import LikeEntity from './like.entity';
 
 @Entity()
 export default class UserEntity extends BaseEntity {
@@ -17,4 +18,7 @@ export default class UserEntity extends BaseEntity {
 
   @OneToMany(() => CollectionsEntity, collection => collection.user)
   collections: CollectionsEntity[];
+
+  @OneToMany(() => LikeEntity, like => like.user)
+  likes: LikeEntity[];
 }

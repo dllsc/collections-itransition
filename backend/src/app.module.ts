@@ -6,10 +6,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 //
 import UserEntity from '../db/user.entity';
 import { LoggedUserService } from './logged-user.service';
-import CollectionsModule from './Collections/collections.module';
 import CollectionsEntity from '../db/collections.entity';
 import ItemsEntity from '../db/items.entity';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import LikeEntity from '../db/like.entity';
+import CollectionsController from './controllers/collections.controller';
+import { LikesController } from './controllers/likes.controller';
 
 
 @Global()
@@ -26,6 +28,10 @@ export class GlobalModule {
 }
 
 @Module({
+  controllers: [
+    CollectionsController,
+    LikesController,
+  ],
   imports: [
     // ConfigModule.forRoot(),
     AuthModule,
@@ -38,13 +44,12 @@ export class GlobalModule {
       // logging: ['query'],
     }),
     TypeOrmModule.forFeature(
-      [UserEntity, CollectionsEntity, ItemsEntity],
+      [UserEntity, CollectionsEntity, ItemsEntity, LikeEntity],
     ),
     ServeStaticModule.forRoot({
       rootPath: `${__dirname}/../images`,
     }),
     GlobalModule,
-    CollectionsModule,
   ],
 })
 export class AppModule {

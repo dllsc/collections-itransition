@@ -1,10 +1,12 @@
 import { Typography } from '@mui/material';
 import MDEditor from '@uiw/react-md-editor';
 import { ICollection, Item } from './models';
-import { ArrowBack, Edit, FavoriteBorder } from '@mui/icons-material';
+import { ArrowBack, Edit, Favorite, FavoriteBorder } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import { appHistory } from '../../utils/history.utils';
 import { isLoggedIn } from '../../utils/login.utils';
+import { useEffect, useState } from 'react';
+import { get, post } from '../../axios-instance';
 
 interface IInfoCollectionProps {
   readonly collection: ICollection;
@@ -16,6 +18,22 @@ interface ICollectionInfoToolbarProps {
 
 function CollectionToolbar({ collection }: ICollectionInfoToolbarProps) {
   const marginRight = 10;
+
+  const [liked, setLiked] = useState(false);
+  const [likesTotal, setLikesTotal] = useState(0);
+
+  useEffect(() => {
+    get<boolean>(`like/${collection.id}`).then(setLiked);
+  }, []);
+
+  useEffect(() => {
+    get<number>(`like/total/${collection.id}`).then(setLikesTotal);
+
+    // TODO: это чисто для примера. Проверка того, что можно получить коллекцию залайканых коллекций(каламбур)
+    get<ICollection[]>(`collection/liked`).then(console.log);
+  }, [liked]);
+
+  const toggleLike = () => post<object, boolean>(`like/${collection.id}`, {}).then(setLiked);
 
   return <div className="collection-view__toolbar">
     <Button variant="outlined"
@@ -37,8 +55,10 @@ function CollectionToolbar({ collection }: ICollectionInfoToolbarProps) {
     <Button
       variant="outlined"
       size="large"
-      color="error">
-      <FavoriteBorder/> Like
+      color="error"
+      onClick={toggleLike}>
+      <span style={{ marginRight: 10 }}>{likesTotal}</span>
+      {liked ? <Favorite/> : <FavoriteBorder/>}
     </Button>
   </div>;
 }

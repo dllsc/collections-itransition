@@ -21,6 +21,7 @@ import { IItemEntityDto } from '../dto/item.dto';
 import { IFieldEntityDto } from '../dto/field.dto';
 import FieldsEntity from '../../db/fields.entity';
 import { createQueryBuilder } from 'typeorm';
+import LikeEntity from '../../db/like.entity';
 
 const IMG_DIR = './dist/images';
 
@@ -150,14 +151,12 @@ export default class CollectionsController {
   async getOne(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<any> {
-    const result = await createQueryBuilder(CollectionsEntity, 'c')
+    return await createQueryBuilder(CollectionsEntity, 'c')
       .where('c.id = :id')
       .setParameter('id', id)
       .innerJoinAndSelect('c.items', 'items')
       .innerJoinAndSelect('c.fields', 'fields')
       .getOne();
-
-    return result;
   }
 
   @Get('page/:page/:limit')
@@ -171,5 +170,19 @@ export default class CollectionsController {
       .innerJoinAndSelect('c.items', 'items')
       .innerJoinAndSelect('c.fields', 'fields')
       .getMany();
+  }
+
+  @Get('liked')
+  @UseGuards(JwtAuthGuard)
+  async getLikedCollections(
+  ) {
+    const likesWithCollections = await createQueryBuilder(LikeEntity, 'l')
+      .where('l.userId = :userId', { userId: this.loggedUserService.userId })
+      .innerJoinAndSelect('l.collection', 'collection')
+      .leftJoinAndSelect('collection.items', 'items')
+      .leftJoinAndSelect('collection.fields', 'fields')
+      .getMany();
+
+    return likesWithCollections.map(like => like.collection);
   }
 }
