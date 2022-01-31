@@ -16,10 +16,6 @@
     text-align: center;
 }
 
-.login__button {
-    display: block !important;
-    margin: 32px auto;
-}
 
 .login {
     display: flex;

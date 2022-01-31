@@ -5,7 +5,7 @@ import { axiosInstance } from '../../axios-instance';
 import { ErrorMessage } from '@hookform/error-message';
 import { appHistory } from '../../utils/history.utils';
 import { saveCredentialItems } from '../../utils/login.utils';
-import { Button, TextField } from '@mui/material';
+import { Button, Link, TextField } from '@mui/material';
 import './login.component.css';
 import { REQUIRE_MESSAGE } from '../../constants/constants';
 
@@ -83,8 +83,15 @@ export default function Login() {
 
       <Button className="login__button"
               variant={'outlined'}
-              type="submit">Login</Button>
-
+              type="submit"
+              style={{marginBottom: 15}}>Login</Button>
+      <div>
+        <Link>
+          <Button onClick={()=> appHistory.push('/registration')}>
+            Registration
+          </Button>
+        </Link>
+      </div>
     </form>
   </div>;
 }

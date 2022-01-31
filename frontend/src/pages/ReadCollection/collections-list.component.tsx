@@ -1,7 +1,17 @@
 import { useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { get } from '../../axios-instance';
-import { Badge, Card, CardActionArea, CardContent, Grid, IconButton, Typography } from '@mui/material';
+import {
+  Badge,
+  Card,
+  CardActionArea,
+  CardContent,
+  FormControl,
+  Grid,
+  IconButton, InputLabel, Link, MenuItem,
+  Select, SelectChangeEvent,
+  Typography,
+} from '@mui/material';
 import { appHistory } from '../../utils/history.utils';
 import { ICollection } from './models';
 import { imageToBackground } from '../../utils/styles.utils';
@@ -10,8 +20,10 @@ import {
   ArrowBackIos,
   ArrowForwardIos, CreateNewFolder, CreateSharp, DeleteForeverOutlined,
   Edit,
-  FavoriteBorder,
+  FavoriteBorder, ReadMore,
 } from '@mui/icons-material';
+import { getUserId, isLoggedIn } from '../../utils/login.utils';
+import * as events from 'events';
 
 
 interface ICardCollection {
@@ -32,14 +44,16 @@ function ToolsRead(props: ToolsProps) {
 
   return <div>
     <Button
-      style={{ marginRight: 5 }}
       onClick={goToCollection}
       variant="outlined"
       size="large"
-      color="primary">
+      color="primary"
+      style={{ width: 90, marginBottom: 10 }}>
+      <ReadMore/>
       Read
     </Button>
     <Button
+      style={{ width: 90 }}
       variant="outlined"
       size="large"
       color="error">
@@ -54,12 +68,13 @@ function ToolsAuth(props: ToolsProps) {
     <Button variant="outlined"
             size="large"
             color="error"
-            style={{ marginRight: 5 }}>
+            style={{ width: 90, marginBottom: 10 }}>
       <DeleteForeverOutlined/> Delete
     </Button>
     <Button variant="outlined"
             size="large"
             color="primary"
+            style={{ width: 90 }}
             onClick={() => appHistory.push(`/collection/edit/${props.id}`)}>
       <Edit/> Edit
     </Button>
@@ -76,6 +91,7 @@ function CollectionCard(props: ICardCollection) {
       paddingTop: 15,
       marginBottom: 15,
       paddingBottom: 15,
+      marginLeft: 15,
       border: '1px solid gray',
     }}>
 
@@ -112,22 +128,29 @@ export function CollectionsListComponent() {
   const params = useParams<{ page: string, limit: string }>();
   const [isLoading, setLoading] = useState(true);
   const [collections, setCollections] = useState<ICollection[]>([]);
+  const [limit, setLimit] = useState(params.limit);
 
 
   const goNext = () => {
-    setLoading(true)
-    const href = `/collection/all/${parseInt(params.page) + 1}/${params.limit}`;
-    appHistory.push(href);
-      get<ICollection[]>(`collection/page/${parseInt(params.page) + 1}/${params.limit}`).then(data => {
-       setCollections(data);
-        setLoading(false);
-      });
 
+    if (!(collections.length < parseInt(params.limit))) {
+      const href = `/collection/all/${parseInt(params.page) + 1}/${params.limit}`;
+
+      get<ICollection[]>(`collection/page/${parseInt(params.page) + 1}/${params.limit}`).then(data => {
+        if (data.length) {
+          appHistory.push(href);
+          setLoading(true);
+          setCollections(data);
+          setLoading(false);
+        }
+
+      });
+    }
   };
+
   const goBack = () => {
-    if (parseInt(params.page) > 0)
-    {
-      setLoading(true)
+    if (parseInt(params.page) > 0) {
+      setLoading(true);
       const href = `/collection/all/${parseInt(params.page) - 1}/${params.limit}`;
       appHistory.push(href);
       get<ICollection[]>(`collection/page/${parseInt(params.page) - 1}/${params.limit}`).then(data => {
@@ -148,6 +171,17 @@ export function CollectionsListComponent() {
     return <div>Loading...</div>;
   }
 
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setLimit(event.target.value);
+    const href = `/collection/all/${parseInt(params.page)}/${event.target.value}`;
+    appHistory.push(href);
+    get<ICollection[]>(`collection/page/${parseInt(params.page) - 1}/${event.target.value}`).then(data => {
+      setCollections(data);
+      setLoading(false);
+    });
+  };
+
   return <>
     <Grid container
           alignItems="center">
@@ -163,15 +197,55 @@ export function CollectionsListComponent() {
             xs={10}
             style={{ height: '100vh', overflowY: 'auto' }}>
         <div style={{ textAlign: 'right', paddingBottom: 15, paddingTop: 25 }}>
+          <FormControl style={{ width: 100, marginRight: 20 }}>
+            <InputLabel id="select-label">Show</InputLabel>
+            <Select
+              labelId="select-label"
+              value={limit}
+              label="Show"
+              onChange={handleChange}
+            >
+              <MenuItem value={0}>All</MenuItem>
+              <MenuItem value={5}>Five</MenuItem>
+              <MenuItem value={10}>Ten</MenuItem>
+              <MenuItem value={30}>Thirty</MenuItem>
+            </Select>
+          </FormControl>
+
+
+  <Link>
+    <Button onClick={() => appHistory.push('/registration')}>
+      Registration
+    </Button>
+  </Link>
+
+  <Link>
+    <Button onClick={() => appHistory.push('/login')}>
+      Login
+    </Button>
+  </Link>
+
+
+
           <IconButton color={'default'}
-                      onClick={() => appHistory.push(`/collection/create`)}>
+                      onClick={() => {
+                        getUserId();
+                        appHistory.push(`/collection/create`);
+                      }}>
             <CreateSharp/> Create New
           </IconButton>
         </div>
-        {collections.map(c => <CollectionCard name={c.name}
-                                              description={c.description}
-                                              theme={c.theme}
-                                              id={c.id}/>)}
+        <Grid container>
+          {collections.map(c => <Grid item
+                                      xs={6}>
+              <CollectionCard name={c.name}
+                              description={c.description}
+                              theme={c.theme}
+                              id={c.id}/>
+            </Grid>,
+          )}
+        </Grid>
+
       </Grid>
       <Grid item
             xs={1}

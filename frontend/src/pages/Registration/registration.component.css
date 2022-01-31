@@ -14,10 +14,7 @@
     font-weight: normal;
     text-align: center;
 }
-.registration__button{
-    display: block !important;
-    margin: 32px auto;
-}
+
 .registration{
     display: flex;
     align-items: center;

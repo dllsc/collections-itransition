@@ -4,7 +4,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { axiosInstance } from '../../axios-instance';
 import { ErrorMessage } from '@hookform/error-message';
 import { appHistory } from '../../utils/history.utils';
-import { Button, TextField } from '@mui/material';
+import { Button, Link, TextField } from '@mui/material';
 import './registration.component.css';
 
 type RegistrationForm = {
@@ -94,7 +94,17 @@ export default function Registration() {
         <Button color={'primary'}
                 variant={'outlined'}
                 className="registration__button"
-                type="submit">REGISTER</Button>
+                type="submit"
+        style={{marginBottom: 15}}
+        >REGISTER</Button>
+<div>
+  <Link>
+    <Button onClick={()=> appHistory.push('/login')}>
+      Have account?
+    </Button>
+  </Link>
+</div>
+
 
       </form>
     </div>
