@@ -68,12 +68,6 @@ function ToolsAuth(props: ToolsProps) {
   return <div>
     <Button variant="outlined"
             size="large"
-            color="error"
-            style={{ width: 90, marginBottom: 10 }}>
-      <DeleteForeverOutlined/> Delete
-    </Button>
-    <Button variant="outlined"
-            size="large"
             color="primary"
             style={{ width: 90 }}
             onClick={() => appHistory.push(`/collection/edit/${props.id}`)}>

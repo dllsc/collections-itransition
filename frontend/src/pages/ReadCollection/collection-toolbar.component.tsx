@@ -9,6 +9,7 @@ export function CollectionToolbar() {
   return <div style={{ paddingBottom: 15, paddingTop: 25 }}>
 
 
+    {!isLoggedIn() && <>
     <Link>
       <Button onClick={() => appHistory.push('/registration')}>
         Registration
@@ -20,9 +21,10 @@ export function CollectionToolbar() {
         Login
       </Button>
     </Link>
+    </>}
 
     <Link>
-      {!isLoggedIn() &&
+      {isLoggedIn() &&
         <Button onClick={() => {
           removeCredentialItems();
           appHistory.push('/login');
