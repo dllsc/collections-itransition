@@ -1,19 +1,22 @@
 import { useParams } from 'react-router-dom';
-import React, { InputHTMLAttributes, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { get } from '../../axios-instance';
 import {
-  FormControl, FormControlLabel, FormLabel,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
   Grid,
-  IconButton, InputLabel, InputProps, MenuItem, Radio, RadioGroup,
-  Select, SelectChangeEvent, Switch, SwitchProps, SwitchState,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  Radio,
+  RadioGroup,
+  Select,
+  SelectChangeEvent,
 } from '@mui/material';
 import { appHistory } from '../../utils/history.utils';
 import { ICollection } from './models';
-import {
-  ArrowBackIos,
-  ArrowForwardIos,
-
-} from '@mui/icons-material';
+import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 import { CollectionCard } from './collection-card.component';
 import { CollectionToolbar } from './collection-toolbar.component';
 
@@ -149,6 +152,7 @@ export function CollectionsListComponent() {
               <CollectionCard name={c.name}
                               description={c.description}
                               theme={c.theme}
+                              userId={c.user.id}
                               id={c.id}/>
             </Grid>,
           )}

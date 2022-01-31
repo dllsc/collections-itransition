@@ -20,6 +20,7 @@ export interface ICollection {
   theme: string;
   items: Item[];
   fields: Field[];
+  user: { id: number };
 }
 
 export interface IAddItemFormModel {

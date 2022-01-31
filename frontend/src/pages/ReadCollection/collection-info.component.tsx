@@ -4,7 +4,7 @@ import { ICollection, Item } from './models';
 import { ArrowBack, Edit, Favorite, FavoriteBorder } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import { appHistory } from '../../utils/history.utils';
-import { isLoggedIn } from '../../utils/login.utils';
+import { isCurrentUser, isLoggedIn } from '../../utils/login.utils';
 import { useEffect, useState } from 'react';
 import { get, post } from '../../axios-instance';
 
@@ -41,22 +41,25 @@ function CollectionToolbar({ collection }: ICollectionInfoToolbarProps) {
       <ArrowBack/> Go Back
     </Button>
 
-    <Button variant="outlined"
-            style={{ marginRight }}
-            size="large"
-            color="primary"
-            onClick={() => appHistory.push(`/collection/edit/${collection.id}`)}>
-      <Edit/> Edit
-    </Button>
+    {isCurrentUser(collection.user.id) &&
+      <Button variant="outlined"
+              style={{ marginRight }}
+              size="large"
+              color="primary"
+              onClick={() => appHistory.push(`/collection/edit/${collection.id}`)}>
+        <Edit/> Edit
+      </Button>}
 
-    <Button
-      variant="outlined"
-      size="large"
-      color="error"
-      onClick={toggleLike}>
-      <span style={{ marginRight: 10 }}>{likesTotal}</span>
-      {liked ? <Favorite/> : <FavoriteBorder/>}
-    </Button>
+    {isLoggedIn() &&
+      <Button
+        variant="outlined"
+        size="large"
+        color="error"
+        onClick={toggleLike}>
+        <span style={{ marginRight: 10 }}>{likesTotal}</span>
+        {liked ? <Favorite/> : <FavoriteBorder/>}
+      </Button>
+    }
   </div>;
 }
 

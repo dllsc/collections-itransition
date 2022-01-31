@@ -16,7 +16,7 @@ function getUserIdFromLocalStorage(): number {
 }
 
 function isUserIdExists(): boolean {
-  return isNaN(getUserIdFromLocalStorage());
+  return !!getUserIdFromLocalStorage();
 }
 
 export function getUserId(): number {
@@ -27,7 +27,11 @@ export function getUserId(): number {
   return getUserIdFromLocalStorage();
 }
 
+export function isCurrentUser(id: number): boolean {
+  return getUserIdFromLocalStorage() === id;
+}
+
 export function isLoggedIn() {
-  return !isUserIdExists();
+  return isUserIdExists();
 }
 

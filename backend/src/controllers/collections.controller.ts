@@ -158,6 +158,7 @@ export default class CollectionsController {
       .setParameter('id', id)
       .innerJoinAndSelect('c.items', 'items')
       .innerJoinAndSelect('c.fields', 'fields')
+      .innerJoinAndSelect('c.user', 'user')
       .getOne();
   }
 
@@ -171,6 +172,7 @@ export default class CollectionsController {
       .take(limit)
       .innerJoinAndSelect('c.items', 'items')
       .innerJoinAndSelect('c.fields', 'fields')
+      .innerJoinAndSelect('c.user', 'user')
       .getMany();
   }
 
@@ -186,6 +188,7 @@ export default class CollectionsController {
       .take(limit)
       .innerJoinAndSelect('c.items', 'items')
       .innerJoinAndSelect('c.fields', 'fields')
+      .innerJoinAndSelect('c.user', 'user')
       .getMany();
   }
 
@@ -208,6 +211,7 @@ export default class CollectionsController {
       .innerJoinAndSelect('l.collection', 'collection')
       .leftJoinAndSelect('collection.items', 'items')
       .leftJoinAndSelect('collection.fields', 'fields')
+      .leftJoinAndSelect('collection.user', 'user')
       .getMany()
     ;
 
